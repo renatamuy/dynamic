@@ -1,78 +1,76 @@
+#' ----
 # Packages used in Muylaert et al. sarbecovirus hosts distribution
 # Make sure you are in distribution_models project
+#' ----
 
-P <- c("here","stringr","spocc", "data.table", "dplyr", "ggmap", "ggplot2", "ggsn", "maps", "mapdata" )
+# package list
+pkg_list_cran <- c("devtools", 
+                   "Rcpp",
+                   "here",
+                   "tidyverse",
+                   "xlsx", 
+                   "vroom",
+                   "data.table",
+                   "janitor",
+                   "stringi",
+                   "reshape2",
+                   "DataExplorer",
+                   "skimr",
+                   "XML",
+                   "spocc",
+                   "taxize",
+                   "CoordinateCleaner",
+                   "rredlist",
+                   "rnaturalearth",
+                   "rnaturalearthdata",
+                   "spData",
+                   "sf",
+                   "raster",
+                   "terra",
+                   "ncdf4",
+                   "spatialEco",
+                   "ecospat",
+                   "dismo",
+                   "tmap",
+                   "ggmap",
+                   "ggspatial",
+                   "ggsn",
+                   "ggbump",
+                   "gghighlight",
+                   "ggraph",
+                   "ggridges",
+                   "igraph",
+                   "maps",
+                   "mapdata",
+                   "legendMap",
+                   "rasterVis",
+                   "leaflet",
+                   "leafem",
+                   "leaflet.opacity",
+                   "htmlwidgets",
+                   "htmltools",
+                   "lattice",
+                   "ggpubr",
+                   "corrplot",
+                   "classInt",
+                   "graphlayouts",
+                   "oaqc",
+                   "bipartite",
+                   "RColorBrewer",
+                   "randomcoloR",
+                   "viridis",
+                   "wesanderson",
+                   "hrbrthemes",
+                   "rstatix",
+                   "MuMIn")
 
-for(p in P){
-  if(!require(p,character.only = TRUE)) install.packages(p)
-  library(p,character.only = TRUE)
-}
+# require else install all packages
+lapply(X = pkg_list_cran, 
+       FUN = function(x) if(!require(x, character.only = TRUE)) install.packages(x, dep = TRUE, quiet = TRUE))
 
-lapply(P, library, character.only = TRUE)
+# packages from github
+if(!require(scico)) devtools::install_github("thomasp85/scico")
+if(!require(platexpress)) devtools::install_github("raim/platexpress")
+if(!require(Manu)) devtools::install_github("G-Thomson/Manu")
 
-firstup <- function(x) {
-  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
-  x
-}
-
-#devtools::install_github("thomasp85/scico")
-require(DataExplorer)
-require(xlsx)
-library(raster)
-library(rasterVis)
-library(tidyverse)
-library(dplyr)
-library(skimr)
-require(viridis)
-library(ggpubr)
-library(gghighlight)
-library(ggplot2)
-library(ggmap)
-library(ggbump)
-require(ggspatial)
-require(taxize)
-require(stringr)
-library(randomcoloR)
-require(data.table)
-require(spatialEco)
-library(CoordinateCleaner)
-library(ecospat)
-library(lubridate)
-require(tmap)
-library(lattice)
-library(maps)
-library(sp)
-require(sf)
-library(ncdf4)
-library(leaflet)
-library(randomcolorR)
-require(platexpress)
-library(leafem)
-library(rnaturalearth)
-library(rnaturalearthdata)
-library(htmlwidgets)
-library(htmltools)
-require(stringi)
-require(manu)
-require(Rcpp)
-require(platexpress)
-library(RColorBrewer)
-library(magrittr)
-library(igraph)
-library(ggraph)
-library(graphlayouts)
-library(oaqc)
-require(spData)
-require(reshape2)
-library(leaflet.opacity)
-library(lattice)
-library(dplyr)
-library(hrbrthemes)
-require(bipartite)
-require(rredlist)
-require(corrplot)
-require(rstatix)
-library(MuMIn)
-library(vroom)
-library(wesanderson)
-#############################################################################################################
+# end ---------------------------------------------------------------------

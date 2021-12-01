@@ -5,35 +5,33 @@
 
 options(digits = 3, scipen = 999)
 
-source('00_packages.R')
-
-source('01_settings.R')
-
+source("00_packages.R")
+source("01_settings.R")
 require(raster)
 
 # Open richness map
 
 setwd(aa)
-all_aa <- stack(list.files(pattern='.tif$'))
+all_aa <- stack(list.files(pattern = ".tif$"))
 
 setwd(binrasterdir)
 
-all <- stack(list.files(pattern='.tif$'))
+all <- stack(list.files(pattern = ".tif$"))
 
 # over accessible area
 
 allm <- mask(all, all_aa)
 
-richness <- sum(allm, na.rm=TRUE) 
+richness <- sum(allm, na.rm = TRUE) 
 
 # Open bias raster
 setwd(projdir)
 
-setwd('sampbias_025dd/')
+setwd("sampbias_025dd/")
 
-rbias <- raster('rcar_sarbecovirus_hosts.tif')
+rbias <- raster("rcar_sarbecovirus_hosts.tif")
 
-crs(rbias) <- CRS('+init=EPSG:4326')
+crs(rbias) <- CRS(" + init = EPSG:4326")
 
 # Correlation
 
@@ -51,34 +49,35 @@ hist(values(richness))
 # Plot
 rbiasrm <- crop( rbiasr, rbias)
 richnessm <- crop( richness, rbiasrm)
-plot(rbiasrm, colNA="blue")
-plot(richnessm, colNA="blue")
+plot(rbiasrm, colNA = "blue")
+plot(richnessm, colNA = "blue")
 richnessmm <-richnessm
 
 richnessmm <- mask(richnessm, rbiasrm)
 
-#plot(richnessmm, colNA="blue")
+#plot(richnessmm, colNA = "blue")
 
 # Arrange panel with other panels.. 
 rbiasrp <- data.frame(rasterToPoints(rbiasrm) )
 richnessp <-data.frame(rasterToPoints(richnessmm))
 
-big <- merge(rbiasrp, richnessp, by=c('x','y'))
+big <- merge(rbiasrp, richnessp, by = c("x","y"))
 head(big)
 
 #Zissou1 ,Moonrise3,#Rushmore1,#Darjeeling1
 
 pal <- wesanderson::wes_palette("Zissou1", 100, type = "continuous")
 
-palgrey <- RColorBrewer::brewer.pal(9, 'Greys')
+palgrey <- RColorBrewer::brewer.pal(9, "Greys")
 
-figsamp <- ggplot(data = big, aes(y = layer, 
-           x = rcar_sarbecovirus_hosts )) +   #geom_point() +
-  #geom_bin2d(bins=40)+
-  geom_hex(bins=14)+
-  labs(x='Sampling rate',y='Sarbecovirus host species')+
+figsamp <- ggplot(data = big, 
+                  aes(y = layer, x = rcar_sarbecovirus_hosts )) +  
+  #geom_point() + 
+  #geom_bin2d(bins = 40) + 
+  geom_hex(bins = 14) + 
+  labs(x = "Sampling rate",y = "Sarbecovirus host species") + 
   scale_fill_gradientn(trans = "log10", colours = palgrey) + 
-    #scale_fill_viridis(trans = "log10", option='cividis')+
+  #scale_fill_viridis(trans = "log10", option = "cividis") + 
   theme_bw()
 
 figsamp
@@ -87,17 +86,18 @@ figsamp
 figsampf <- big %>% 
   filter(layer > 0) %>% 
   ggplot(aes(y = layer, 
-                                  x = rcar_sarbecovirus_hosts )) +   #geom_point() +
-  geom_hex(bins=12)+
-  labs(x='Sampling rate',y='Sarbecovirus host species')+
+             x = rcar_sarbecovirus_hosts )) +  
+  #geom_point() + 
+  geom_hex(bins = 12) + 
+  labs(x = "Sampling rate",y = "Sarbecovirus host species") + 
   scale_fill_gradientn(trans = "log10", colours = palgrey) + 
-  #scale_fill_viridis(trans = "log10", option='cividis')+
-  ggtitle( 'C.' )  + 
-  theme_bw()+
-  theme(legend.title=element_blank(), 
-        plot.title=element_text(size=18),
-        axis.text = element_text(size=18),
-        axis.title = element_text(size=18))
+  #scale_fill_viridis(trans = "log10", option = "cividis") + 
+  ggtitle( "C." ) + 
+  theme_bw() + 
+  theme(legend.title = element_blank(), 
+        plot.title = element_text(size = 18),
+        axis.text = element_text(size = 18),
+        axis.title = element_text(size = 18))
 
 figsampf
 
@@ -117,14 +117,14 @@ big %>%
 
 
 setwd(projdir)
-setwd('hotspots')
+setwd("hotspots")
 
-figs <- paste0('Fig_sampling_rich', version_suffix, '.jpg')
+figs <- paste0("Fig_sampling_rich", version_suffix, ".jpg")
 #ggsave(filename = figs, 
-#       gridExtra::grid.arrange(figsamp, nrow = 1))
+#  gridExtra::grid.arrange(figsamp, nrow = 1))
 
-figsa <- paste0('Fig_sampling_rich_above_zero_F_', version_suffix, '.jpg')
-ggsave(filename =figsa , width = 30, height = 26, units='cm',
+figsa <- paste0("Fig_sampling_rich_above_zero_F_", version_suffix, ".jpg")
+ggsave(filename = figsa , width = 30, height = 26, units = "cm",
        gridExtra::grid.arrange(figsampf, nrow = 1))
 
 # Find pixels with maximum values and countries
@@ -132,10 +132,10 @@ map = spData::world %>%
   dplyr::filter(!continent %in% c("South America", "North America", "Antarctica", "Oceania"))
 
 # Russia only will not do; Fiji also crosses the antimeridean...
-rossiya <- subset(map,  iso_a2 %in% c("RU", "FJ"))
+rossiya <- subset(map, iso_a2 %in% c("RU", "FJ"))
 pacified_rossiya <- st_shift_longitude(rossiya)
-rest_of_world <- subset(map, !iso_a2 %in% c("RU", "FJ", 'FR', 'TF')) # removing weird territories
-fr <- subset( map, name_long %in% c('France'))
+rest_of_world <- subset(map, !iso_a2 %in% c("RU", "FJ", "FR", "TF")) # removing weird territories
+fr <- subset( map, name_long %in% c("France"))
 fre <- st_cast(fr,"POLYGON")
 france <- fre[2:3,] #REMOVING FRENCH GUIANA......................
 map2 <- rbind(pacified_rossiya,
@@ -143,8 +143,8 @@ map2 <- rbind(pacified_rossiya,
 
 worldmap <- st_collection_extract(map2, "POLYGON")
 
-maxratecountry <- raster::extract( rbiasrm, worldmap,  fun=max, na.rm=TRUE, df=TRUE, weights = FALSE, sp=TRUE) 
-meanratecountry <- raster::extract( rbiasrm, worldmap,  fun=mean, na.rm=TRUE, df=TRUE, weights = FALSE, sp=TRUE) 
+maxratecountry <- raster::extract( rbiasrm, worldmap, fun = max, na.rm = TRUE, df = TRUE, weights = FALSE, sp = TRUE) 
+meanratecountry <- raster::extract( rbiasrm, worldmap, fun = mean, na.rm = TRUE, df = TRUE, weights = FALSE, sp = TRUE) 
 
 require(sp)
 require(sf)
@@ -154,36 +154,36 @@ maptheme <- theme_classic() +
         axis.title = element_blank(),
         axis.line = element_blank(), 
         axis.ticks = element_blank(),
-        plot.title = element_text(hjust=0.5, size=14),
-        legend.title = element_text(size=10), 
+        plot.title = element_text(hjust = 0.5, size = 14),
+        legend.title = element_text(size = 10), 
         strip.background = element_blank(),
-        strip.text = element_text(size=16))
+        strip.text = element_text(size = 16))
 
 palr <- wesanderson::wes_palette("Zissou1", 152, type = "continuous")
 
 head(maxratecountry)
-mappolrates <- ggplot() +
-  geom_sf(data=st_as_sf(maxratecountry), 
-          aes(fill=rcar_sarbecovirus_hosts ), col="black", size=0.3, alpha=0.94)  +
-  coord_sf(crs = st_crs(crs(worldmap)), ylim = c(-35, 80), xlim = c(-20, 160))+
+mappolrates <- ggplot() + 
+  geom_sf(data = st_as_sf(maxratecountry), 
+          aes(fill = rcar_sarbecovirus_hosts ), col = "black", size = 0.3, alpha = 0.94) + 
+  coord_sf(crs = st_crs(crs(worldmap)), ylim = c(-35, 80), xlim = c(-20, 160)) + 
   scale_fill_gradientn(colours = pal, 
-                       breaks=c(0, 0.01,0.1, 0.2, 0.3, 0.4)) + 
-  #scale_fill_viridis_c(option="inferno", na.value= "mintcream", alpha = .8, breaks=c(5,10,15))+  #trans = "sqrt"
-  ggtitle( 'E. Maximum sampling rate per nation' )  + 
-  maptheme + theme(legend.title=element_blank(), 
-                   plot.title=element_text(size=14, face = "italic"))
+                       breaks = c(0, 0.01,0.1, 0.2, 0.3, 0.4)) + 
+  #scale_fill_viridis_c(option = "inferno", na.value = "mintcream", alpha = .8, breaks = c(5,10,15)) + #trans = "sqrt"
+  ggtitle( "E. Maximum sampling rate per nation" ) + 
+  maptheme + theme(legend.title = element_blank(), 
+                   plot.title = element_text(size = 14, face = "italic"))
 
 mappolrates
 
 # zonal richness
 
-names(richnessmm) <- 'sarbeco'
+names(richnessmm) <- "sarbeco"
 
-maxpercountry <- raster::extract( richnessmm, worldmap,  fun=max, 
-                                  na.rm=TRUE, df=TRUE, weights = FALSE, sp=TRUE) 
+maxpercountry <- raster::extract( richnessmm, worldmap, fun = max, 
+                                  na.rm = TRUE, df = TRUE, weights = FALSE, sp = TRUE) 
 
-maxpercountryoriginal <- raster::extract( richnessm, worldmap,  
-                                          fun=max, na.rm=TRUE, df=TRUE, weights = FALSE, sp=TRUE) 
+maxpercountryoriginal <- raster::extract( richnessm, worldmap, 
+                                          fun = max, na.rm = TRUE, df = TRUE, weights = FALSE, sp = TRUE) 
 
 
 head(maxpercountry)
@@ -192,8 +192,8 @@ maxpercountryoriginal@data %>% arrange(desc(layer)) %>% select(admin, layer)
 # Different worldmap
 
 
-maxpercountryoriginaljustp <- raster::extract( richnessm, justp,  
-                                          fun=max, na.rm=TRUE, df=TRUE, weights = FALSE, sp=TRUE) 
+maxpercountryoriginaljustp <- raster::extract( richnessm, justp, 
+                                               fun = max, na.rm = TRUE, df = TRUE, weights = FALSE, sp = TRUE) 
 
 maxpercountryoriginaljustp@data %>% arrange(desc(layer)) %>% select(name_long, layer)
 
@@ -214,11 +214,11 @@ jointable1$sarbeco
 table1
 
 # Add SD
-sdcounties <- raster::extract( rbiasrm, worldmap,  fun=sd, na.rm=TRUE, df=TRUE, weights = FALSE, sp=TRUE) 
-names(sdcounties)[11] <- 'SD_effort'
+sdcounties <- raster::extract( rbiasrm, worldmap, fun = sd, na.rm = TRUE, df = TRUE, weights = FALSE, sp = TRUE) 
+names(sdcounties)[11] <- "SD_effort"
 # Add Median
-mediancountries <- raster::extract( rbiasrm, worldmap,  fun=median, na.rm=TRUE, df=TRUE, weights = FALSE, sp=TRUE) 
-names(mediancountries)[11]  <- 'median_effort'
+mediancountries <- raster::extract( rbiasrm, worldmap, fun = median, na.rm = TRUE, df = TRUE, weights = FALSE, sp = TRUE) 
+names(mediancountries)[11] <- "median_effort"
 
 jointable1a <- left_join(sdcounties@data, mediancountries@data)
 jointable1b <- left_join(table1avgarranged, jointable1a)
@@ -234,59 +234,59 @@ table1clean <- table1 %>% select(country = name_long,
                                  continent,
                                  subregion, 
                                  pop, area_km2,
-                                 hosts=sarbeco,
-                  mean_sampling = rcar_sarbecovirus_hosts, 
-                  median_sampling = median_effort,
-                  SD_sampling = SD_effort )
+                                 hosts = sarbeco,
+                                 mean_sampling = rcar_sarbecovirus_hosts, 
+                                 median_sampling = median_effort,
+                                 SD_sampling = SD_effort )
 
 
 head(table1clean)
 
 # Exporting Table 1
-write.xlsx2(table1clean, file='Table_1_spData_world_original.xlsx', row.names = FALSE)
+write.xlsx2(table1clean, file = "Table_1_spData_world_original.xlsx", row.names = FALSE)
 
 require(ggrepel)
 
-ploti <- ggplot(table1clean, aes(mean_sampling, hosts, label = country)) +
-  geom_point(color = "black", alpha=0) +
-  geom_label_repel()+ # geom_label() + 
- labs(title = "", x='') + theme_bw()
+ploti <- ggplot(table1clean, aes(mean_sampling, hosts, label = country)) + 
+  geom_point(color = "black", alpha = 0) + 
+  geom_label_repel() + # geom_label() + 
+  labs(title = "", x = "") + theme_bw()
 
 ploti
 
-table1clean %>% ggplot(aes(mean_sampling, hosts, label = continent)) +
-  geom_point(alpha=0.6) +geom_label_repel(max.overlaps =20)+ # geom_label() + 
-  labs(title = "", x='Mean sampling') + theme_bw()
+table1clean %>% ggplot(aes(mean_sampling, hosts, label = continent)) + 
+  geom_point(alpha = 0.6) + geom_label_repel(max.overlaps = 20) + # geom_label() + 
+  labs(title = "", x = "Mean sampling") + theme_bw()
 
 
 maxsamplingpercdf <- data.frame(maxratecountry) %>%
   arrange(rcar_sarbecovirus_hosts) %>%
   select(sovereignt, rcar_sarbecovirus_hosts)
 # Mean
-mappolratesavg <- ggplot() +
-  geom_sf(data=st_as_sf(meanratecountry), 
-          aes(fill=rcar_sarbecovirus_hosts ), col="black", size=0.3, alpha=0.94)  +
-  coord_sf(crs = st_crs(crs(worldmap)), ylim = c(-35, 80), xlim = c(-20, 160))+
+mappolratesavg <- ggplot() + 
+  geom_sf(data = st_as_sf(meanratecountry), 
+          aes(fill = rcar_sarbecovirus_hosts ), col = "black", size = 0.3, alpha = 0.94) + 
+  coord_sf(crs = st_crs(crs(worldmap)), ylim = c(-35, 80), xlim = c(-20, 160)) + 
   scale_fill_gradientn(colours = pal, 
-              breaks=c(0, 0.01,0.1, 0.2, 0.3, 0.4)) + 
-  ggtitle( 'D. Average sampling rate per nation' )  + 
-  maptheme + theme(legend.title=element_blank(),
-                   plot.title=element_text(size=14, face = "italic"))
+                       breaks = c(0, 0.01,0.1, 0.2, 0.3, 0.4)) + 
+  ggtitle( "D. Average sampling rate per nation" ) + 
+  maptheme + theme(legend.title = element_blank(),
+                   plot.title = element_text(size = 14, face = "italic"))
 
 
 mappolratesavg
 
-figratemaps <- paste0('Figure_sampling_rate_maps', version_suffix, '.jpg')
+figratemaps <- paste0("Figure_sampling_rate_maps", version_suffix, ".jpg")
 ggsave(filename = figratemaps,
        width = 20, height = 30, units = "cm",
        gridExtra::grid.arrange(mappolrates,mappolratesavg, nrow = 2))
 
 # Better composition (not sure)
-figratemapscompo <- paste0('Fig_sampling_rate_maps_compo_', version_suffix, '.jpg')
+figratemapscompo <- paste0("Fig_sampling_rate_maps_compo_", version_suffix, ".jpg")
 ggsave(filename = figratemapscompo,
-       gridExtra::grid.arrange(arrangeGrob(mappolratesavg, mappolrates, nrow=2),
-                                                          figsampf, ncol = 2),
-       width = 25, height=20, units='cm')
+       gridExtra::grid.arrange(arrangeGrob(mappolratesavg, mappolrates, nrow = 2),
+                               figsampf, ncol = 2),
+       width = 25, height = 20, units = "cm")
 
 
 # ZONAL BIVARIATE MAPS THAT will not be in the manuscript!
@@ -327,8 +327,8 @@ library(rnaturalearth)
 library(WDI)
 library(tigris)
 head(sdcounties)
-testando <- geo_join(sdcounties, mediancountries, 'iso_a2', 'iso_a2')
-bigjoin <- geo_join(maxpercountry, testando, 'iso_a2', 'iso_a2')
+testando <- geo_join(sdcounties, mediancountries, "iso_a2", "iso_a2")
+bigjoin <- geo_join(maxpercountry, testando, "iso_a2", "iso_a2")
 africa<- st_as_sf(bigjoin)
 
 bilegend = legend_creator(stevens.pinkblue(n = 9), 
@@ -341,17 +341,17 @@ africa = add_new_var(africa,
                      var2 = "median_effort", 
                      nbins = 3)
 
-bimap1 = tm_shape(africa) +
-  tm_polygons("new_class", style = "cat", palette = stevens.pinkblue(n = 9)) +
-  tm_layout(legend.show = FALSE) +
-  tm_scale_bar(position=c("right", "bottom"), text.size = 1)+
-  tm_compass(type="rose", position=c("left", "top"), show.labels = 1, size=3)+
+bimap1 = tm_shape(africa) + 
+  tm_polygons("new_class", style = "cat", palette = stevens.pinkblue(n = 9)) + 
+  tm_layout(legend.show = FALSE) + 
+  tm_scale_bar(position = c("right", "bottom"), text.size = 1) + 
+  tm_compass(type = "rose", position = c("left", "top"), show.labels = 1, size = 3) + 
   tm_text("name_long")
 
 bimap1
-cloro <- paste0('Fig_bivariate_3_', version_suffix, '.tif')
+cloro <- paste0("Fig_bivariate_3_", version_suffix, ".tif")
 
-tiff(filename = cloro, width=40, height=24, res=600, units='cm')
+tiff(filename = cloro, width = 40, height = 24, res = 600, units = "cm")
 
 grid.newpage()
 print(bimap1)
@@ -365,16 +365,16 @@ dev.off()
 
 # No labels
 
-bimap2 = tm_shape(africa) +
-  tm_polygons("new_class", style = "cat", palette = stevens.pinkblue(n = 9)) +
-  tm_layout(legend.show = FALSE) +
-  tm_scale_bar(position=c("right", "bottom"), text.size = 1)+
-  tm_compass(type="rose", position=c("left", "top"), show.labels = 1, size=3)
+bimap2 = tm_shape(africa) + 
+  tm_polygons("new_class", style = "cat", palette = stevens.pinkblue(n = 9)) + 
+  tm_layout(legend.show = FALSE) + 
+  tm_scale_bar(position = c("right", "bottom"), text.size = 1) + 
+  tm_compass(type = "rose", position = c("left", "top"), show.labels = 1, size = 3)
 
 bimap2
-cloro <- paste0('Fig_bivariate_tmap_nolab_', version_suffix, '.tif')
+cloro <- paste0("Fig_bivariate_tmap_nolab_", version_suffix, ".tif")
 
-tiff(filename = cloro, width=40, height=24, res=600, units='cm')
+tiff(filename = cloro, width = 40, height = 24, res = 600, units = "cm")
 
 grid.newpage()
 print(bimap2)
@@ -393,18 +393,18 @@ require(legendMap)
 head(bigjoin)
 data <- bi_class(st_as_sf(bigjoin), x = sarbeco, y = median_effort, style = "quantile", dim = 3)
 data
-map <- ggplot() +
-  geom_sf(data = data, mapping = aes(fill = bi_class), color = "gray60", size = 0.1, show.legend = FALSE) +
-  #geom_sf_text(data=data, aes(label= name_long,  geometry = geometry) ) +
-  bi_scale_fill(pal = "DkBlue", dim = 3) +
+map <- ggplot() + 
+  geom_sf(data = data, mapping = aes(fill = bi_class), color = "gray60", size = 0.1, show.legend = FALSE) + 
+  #geom_sf_text(data = data, aes(label = name_long, geometry = geometry) ) + 
+  bi_scale_fill(pal = "DkBlue", dim = 3) + 
   labs(
     title = "",
     subtitle = "") + 
-  xlab('')+ylab('')+
-    bi_theme() + scale_bar(lon = 130, lat = 20, 
-                          distance_lon = 1000, distance_lat = 200, distance_legend = 500, 
-                          dist_unit = "km", orientation = TRUE,
-                          arrow_length = 500, arrow_distance = 500, arrow_north_size =3)
+  xlab("") + ylab("") + 
+  bi_theme() + scale_bar(lon = 130, lat = 20, 
+                         distance_lon = 1000, distance_lat = 200, distance_legend = 500, 
+                         dist_unit = "km", orientation = TRUE,
+                         arrow_length = 500, arrow_distance = 500, arrow_north_size = 3)
 
 
 map
@@ -416,15 +416,15 @@ legend <- bi_legend(pal = "DkBlue",
                     size = 9)
 
 require(cowplot)
-finalPlot <- ggdraw() +
-  draw_plot(map, 0, 0, 1, 1) +
+finalPlot <- ggdraw() + 
+  draw_plot(map, 0, 0, 1, 1) + 
   draw_plot(legend, 0.6, .05, 0.2, 0.2)
 
-clorogg <- paste0('Fig_bivariate_ggplot_NOlab_', version_suffix, '.tif')
+clorogg <- paste0("Fig_bivariate_ggplot_NOlab_", version_suffix, ".tif")
 
-#tiff(filename = clorogg, width=40, height=24, res=300, units='cm')
-clorogg <- paste0('Fig_bivariate_ggplot_NOlab_noaxes_', version_suffix, '.png')
-png(filename = clorogg, width=30, height=24, res=600, units='cm')
+#tiff(filename = clorogg, width = 40, height = 24, res = 300, units = "cm")
+clorogg <- paste0("Fig_bivariate_ggplot_NOlab_noaxes_", version_suffix, ".png")
+png(filename = clorogg, width = 30, height = 24, res = 600, units = "cm")
 finalPlot
 
 dev.off()
@@ -445,42 +445,42 @@ maptheme <- theme_classic() +
         axis.title = element_blank(),
         axis.line = element_blank(), 
         axis.ticks = element_blank(),
-        plot.title = element_text(hjust=0.5, size=14),
-        legend.title = element_text(size=10), 
+        plot.title = element_text(hjust = 0.5, size = 14),
+        legend.title = element_text(size = 10), 
         strip.background = element_blank(),
-        strip.text = element_text(size=16))
+        strip.text = element_text(size = 16))
 
-col.range=c(0,12)
+col.range = c(0,12)
 
-maprichnesscountries <- ggplot() +
-  geom_tile(data=ridf , aes(x=x, y=y, fill=layer) ) + 
-  #scale_fill_gradientn(colours = pal, breaks=c(0, 5, 10), limits=col.range) + 
-  scale_fill_gradientn(breaks=c(0, 5, 10), 
-                       limits=col.range,
-                       values=scales::rescale(c(min(ridf$layer),
-                                                median(ridf$layer), 
-                                                max(ridf$layer))), 
-                       colours=wes_palette("Zissou1", 100, type = "continuous"))+
-  geom_sf(data=data, fill=NA, col="grey40", size=0.3, alpha=1) +
-  coord_sf(crs = st_crs(crs(data)), ylim = c(-35, 80), xlim = c(-20, 160))+
-  ggtitle( 'Bat species hosts of sarbecovirus' )  + 
-  geom_sf_text(data=data, aes(label= name_long,  geometry = geometry) ) +
-  xlab('')+ylab('')+
+maprichnesscountries <- ggplot() + 
+  geom_tile(data = ridf , aes(x = x, y = y, fill = layer) ) + 
+  #scale_fill_gradientn(colours = pal, breaks = c(0, 5, 10), limits = col.range) + 
+  scale_fill_gradientn(breaks = c(0, 5, 10), 
+                       limits = col.range,
+                       values = scales::rescale(c(min(ridf$layer),
+                                                  median(ridf$layer), 
+                                                  max(ridf$layer))), 
+                       colours = wes_palette("Zissou1", 100, type = "continuous")) + 
+  geom_sf(data = data, fill = NA, col = "grey40", size = 0.3, alpha = 1) + 
+  coord_sf(crs = st_crs(crs(data)), ylim = c(-35, 80), xlim = c(-20, 160)) + 
+  ggtitle( "Bat species hosts of sarbecovirus" ) + 
+  geom_sf_text(data = data, aes(label = name_long, geometry = geometry) ) + 
+  xlab("") + ylab("") + 
   scale_bar(lon = 130, lat = 20, 
-                         distance_lon = 1000, distance_lat = 200, distance_legend = 500, 
-                         dist_unit = "km", orientation = TRUE,
-                         arrow_length = 500, arrow_distance = 500, arrow_north_size =3)+
-  maptheme+
-  theme(legend.title=element_blank(), legend.position="right",
-        plot.title=element_text(size=14, face = "italic"))
+            distance_lon = 1000, distance_lat = 200, distance_legend = 500, 
+            dist_unit = "km", orientation = TRUE,
+            arrow_length = 500, arrow_distance = 500, arrow_north_size = 3) + 
+  maptheme + 
+  theme(legend.title = element_blank(), legend.position = "right",
+        plot.title = element_text(size = 14, face = "italic"))
 
-rtoprint <- paste0('Print_richness', '.tif')
-tiff(filename = rtoprint, width=30, height=24, res=600, units='cm')
+rtoprint <- paste0("Print_richness", ".tif")
+tiff(filename = rtoprint, width = 30, height = 24, res = 600, units = "cm")
 maprichnesscountries
 dev.off()
 
-rtoprint <- paste0('Print_richness', '.png')
-png(filename = rtoprint, width=30, height=24, res=600, units='cm')
+rtoprint <- paste0("Print_richness", ".png")
+png(filename = rtoprint, width = 30, height = 24, res = 600, units = "cm")
 maprichnesscountries
 dev.off()
 
@@ -494,31 +494,31 @@ require(wesanderson)
 
 pal <- wes_palette("Zissou1", 100, type = "continuous")
 
-col.range=c(0,0.5))
+col.range = c(0,0.5))
 head(bdf)
-mapsamplingcountries <- ggplot() +
-  geom_tile(data=bdf , aes(x=x, y=y, fill=rcar_sarbecovirus_hosts) ) + 
-  #scale_fill_gradientn(colours = pal, breaks=c(0, 5, 10), limits=col.range) + 
-  #scale_fill_gradientn(breaks=c(0,0.1, 0.2, 0.3, 0.4), 
-   #                    limits=col.range,
-    #                         colours=wes_palette("Zissou1", 100, type = "continuous"))+
-  scale_fill_viridis()+
-  geom_sf(data=data, fill=NA, col="grey40", size=0.3, alpha=1) +
-  coord_sf(crs = st_crs(crs(data)), ylim = c(-35, 80), xlim = c(-20, 160))+
-  ggtitle( 'Estimated sampling rate' )  + 
-  geom_sf_text(data=data, aes(label= name_long,  geometry = geometry) ) +
-  xlab('')+ylab('')+
+mapsamplingcountries <- ggplot() + 
+  geom_tile(data = bdf , aes(x = x, y = y, fill = rcar_sarbecovirus_hosts) ) + 
+  #scale_fill_gradientn(colours = pal, breaks = c(0, 5, 10), limits = col.range) + 
+  #scale_fill_gradientn(breaks = c(0,0.1, 0.2, 0.3, 0.4), 
+  #     limits = col.range,
+  #       colours = wes_palette("Zissou1", 100, type = "continuous")) + 
+  scale_fill_viridis() + 
+  geom_sf(data = data, fill = NA, col = "grey40", size = 0.3, alpha = 1) + 
+  coord_sf(crs = st_crs(crs(data)), ylim = c(-35, 80), xlim = c(-20, 160)) + 
+  ggtitle( "Estimated sampling rate" ) + 
+  geom_sf_text(data = data, aes(label = name_long, geometry = geometry) ) + 
+  xlab("") + ylab("") + 
   scale_bar(lon = 130, lat = 20, 
             distance_lon = 1000, distance_lat = 200, distance_legend = 500, 
             dist_unit = "km", orientation = TRUE,
-            arrow_length = 500, arrow_distance = 500, arrow_north_size =3)+
-  maptheme+
-  theme(legend.title=element_blank(), legend.position="right",
-        plot.title=element_text(size=14, face = "italic"))
+            arrow_length = 500, arrow_distance = 500, arrow_north_size = 3) + 
+  maptheme + 
+  theme(legend.title = element_blank(), legend.position = "right",
+        plot.title = element_text(size = 14, face = "italic"))
 
-stoprint <- paste0('Print_sampling', '.tif')
+stoprint <- paste0("Print_sampling", ".tif")
 
-tiff(filename = stoprint, width=30, height=24, res=600, units='cm')
+tiff(filename = stoprint, width = 30, height = 24, res = 600, units = "cm")
 mapsamplingcountries
 dev.off()
 
@@ -530,33 +530,35 @@ summary(bdflog10)
 
 require(wesanderson)
 
-# This won't be used in the paper, but helps me to understand the bias
+# This won"t be used in the paper, but helps me to understand the bias
 #Moonrise3,#Rushmore1,#Darjeeling1
 
-col.range=c(-13.26,0.31))
+col.range = c(-13.26,0.31))
 head(bdf)
-mapsamplingcountrieslog10 <- ggplot() +
-  geom_tile(data=bdflog10 , aes(x=x, y=y, fill=layer) ) + 
-  #scale_fill_gradientn(  colours=wes_palette("Rushmore1", 100, type = "continuous"))+
-  scale_fill_viridis()+
-  geom_sf(data=data, fill=NA, col="grey40", size=0.3, alpha=1) +
-  coord_sf(crs = st_crs(crs(data)), ylim = c(-35, 80), xlim = c(-20, 160))+
-  ggtitle( 'Estimated sampling rate [log10]' )  + 
-  geom_sf_text(data=data, aes(label= name_long,  geometry = geometry) ) +
-  xlab('')+ylab('')+
+mapsamplingcountrieslog10 <- ggplot() + 
+  geom_tile(data = bdflog10 , aes(x = x, y = y, fill = layer) ) + 
+  #scale_fill_gradientn( colours = wes_palette("Rushmore1", 100, type = "continuous")) + 
+  scale_fill_viridis() + 
+  geom_sf(data = data, fill = NA, col = "grey40", size = 0.3, alpha = 1) + 
+  coord_sf(crs = st_crs(crs(data)), ylim = c(-35, 80), xlim = c(-20, 160)) + 
+  ggtitle( "Estimated sampling rate [log10]" ) + 
+  geom_sf_text(data = data, aes(label = name_long, geometry = geometry) ) + 
+  xlab("") + ylab("") + 
   scale_bar(lon = 130, lat = 20, 
             distance_lon = 1000, distance_lat = 200, distance_legend = 500, 
             dist_unit = "km", orientation = TRUE,
-            arrow_length = 500, arrow_distance = 500, arrow_north_size =3)+
-  maptheme+
-  theme(legend.title=element_blank(), legend.position="right",
-        plot.title=element_text(size=14, face = "italic"))
+            arrow_length = 500, arrow_distance = 500, arrow_north_size = 3) + 
+  maptheme + 
+  theme(legend.title = element_blank(), legend.position = "right",
+        plot.title = element_text(size = 14, face = "italic"))
 
 mapsamplingcountrieslog10
 
-stoprint <- paste0('Print_sampling_log10', '.tif')
+stoprint <- paste0("Print_sampling_log10", ".tif")
 
-tiff(filename = stoprint, width=30, height=24, res=600, units='cm')
+tiff(filename = stoprint, width = 30, height = 24, res = 600, units = "cm")
 mapsamplingcountrieslog10
 dev.off()
-#############################################################################################################
+
+
+# end ---------------------------------------------------------------------
