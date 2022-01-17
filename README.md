@@ -1,7 +1,7 @@
 # Present and future distribution of bat hosts of sarbecoviruses: implications for conservation and public health
 Muylaert et al. (submitted to Proceedings B)
 
-Preprint:
+[Preprint](https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1)
 
 LICENSE TDB
 
