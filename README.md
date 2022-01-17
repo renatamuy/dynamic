@@ -5,7 +5,7 @@ Muylaert et al. (submitted to Proceedings B)
 
 LICENSE TDB
 
-Data: Zenodo DOI TBD
+Data: Dryad DOI TBD
 
 * Authors: Renata L. Muylaert, Tigga Kingston, Jinhong Luo, Maurício Humberto Vancine, Nikolas Galli, Colin J. Carlson, Reju Sam John, Maria Cristina Rulli, David T. S. Hayman
 
