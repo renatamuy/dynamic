@@ -3,7 +3,7 @@ Muylaert et al. (submitted to Proceedings B)
 
 [Preprint](https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1)
 
-<img src="https://github.com/renatamuy/dynamic/blob/main/anim_intersected.gif" width="1000" height="900" />
+<img src="https://github.com/renatamuy/dynamic/blob/main/anim_intersected.gif" width="800" height="700" />
 
 LICENSE TDB
 
