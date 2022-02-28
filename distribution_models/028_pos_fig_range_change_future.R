@@ -2,6 +2,7 @@
 # Potential occupied area calculation for present and future (SLOW)
 # Figure Supplements - go straight to line 372 after loading packages and settings
 # Potential ranges in the future
+# Be awared of species names - manual code (L293)
 #-------------------------------------------------------------------------------------------------------------
 
 source('00_packages.R')
@@ -369,7 +370,8 @@ head(rangefamily)
 
 rangefamily 
 
-# Figure 5----------------------------------------------------------------------------------------------------
+# Figure s12----------------------------------------------------------------------------------------------------
+# old fig 5
 
 setwd(here())
 setwd('hotspots')
@@ -379,40 +381,43 @@ setwd('hotspots')
 
 rangefamily <- read.xlsx( 'ranges_data_Fig5.xlsx', sheetIndex = 1)
 
+
 #head(rangefamily)
+setwd(here())
+setwd('hotspots')
 rangefamily$`Potential range mi` <- rangefamily$Potential.range.mi
 
-fig5 <- rangefamily %>% 
+fig5r1 <- rangefamily %>% 
  mutate(periodp = recode_factor(period,
                                    "Present" =  "Present"   ,
-                                   "2021-2040" = "2021-2040"  ,  
-                                   "2041-2060"=  "2041-2060"    , 
-                                   "2061-2080"=  "2061-2080"   ,  
-                                   "2081-2100" =  "2081-2100"     ,  
+                                   "2021-2040" = "2040"  ,  
+                                   "2041-2060"=  "2060"    , 
+                                   "2061-2080"=  "2080"   ,  
+                                   "2081-2100" =  "2100"     ,  
                                    "Present no msdm" =  "Present no msdm") ) %>% 
   filter(!(rangefamily$period=="Present no msdm"), !(rangefamily$gcm=="CanESM5") ) %>%
    ggplot(aes(x =periodp , y = `Potential range mi`, group=scenario )) +
-  facet_wrap(.~binomial)+
+  facet_wrap(.~binomial, nrow=6)+
   geom_line(aes(color = scenario), size=1.2) +
   geom_point(aes(color = scenario, size=3)) +
   xlab( '') +
-  ylab( 'Potential range area (log million sqkm)') +
-  labs(color = "")+
-  coord_trans(y="log2")+
+  ylab(   expression( sqrt("Area in million "  ~km^2 ))    ) +
+   labs(color = "")+
+  coord_trans(y="sqrt")+
   scale_fill_manual(values = c("goldenrod2","firebrick3"), na.value="dodgerblue4", labels = c( "Projection SSP245","Projection SSP585", 'Prediction')) +
   scale_color_manual(values = c("goldenrod2","firebrick3"),na.value="dodgerblue4", labels = c("Projection SSP245","Projection SSP585", 'Prediction')) +
   guides(size = "none")+
   theme_bw(base_size = 15) +
   theme(legend.position = "top", plot.title.position = "plot", axis.title=element_text(size=15),
-        axis.text.y = element_text(face = "bold", size = 8, angle = 0, vjust = 0.5, hjust=1), 
-        axis.text.x = element_text(face = "bold", size = 14, angle = 90, vjust = 0.5, hjust=1),
+        axis.text.y = element_text(face = "bold", size = 14, angle = 0, vjust = 0.5, hjust=1), 
+        axis.text.x = element_text(face = "bold", size = 14, angle = 90, vjust = 0, hjust=1),
         legend.text = element_text(size = 12),
-        strip.text = element_text(face = "italic", size = 9, colour = "black", angle = 0)) 
-
-fig5
+        strip.text = element_text(face = "italic", size = 11, colour = "black", angle = 0)) 
 
 
-ggsave(fig5, filename = 'Fig_ranges_supplements.png', width =23, height = 30, units = 'cm', dpi=400) #27, 40
+fig5r1
+
+ggsave(fig5r1, filename = 'Fig_ranges_sup_R1.png', width =26, height = 38, units = 'cm', dpi=400)
 
 
 #######################################
@@ -566,68 +571,3 @@ rcompo <- gridExtra::grid.arrange(fr,rmodel, nrow = 2, ncol=1)
 rcompo
 
 #ggsave(filename = fig_range, width =28, height = 39, units = 'cm', dpi=600, rcompo)
-
-#############################################################################################################
-##############################################################################################################
-#### Present MSDM ranges NOT restricted by accessible area 
-# UNDER CONSTRUCTION
-# UNDER CONSTRUCTION
-# UNDER CONSTRUCTION
-#
-#
-#
-#MSDM-NOT-RESTRICTED
-#MSDM-NOT-RESTRICTED
-#MSDM-NOT-RESTRICTED
-##############################################################################################################
-
-setwd(binrasterdir)
-
-allmsdm <- stack(list.files(pattern='.tif$'))
-
-# Removing zeroes
-
-allmsdm[values(allmsdm)==0] <- NA
-
-recebemsdm <- data.frame()
-
-for(m in names(allmsdm)){
-  print(m)
-  
-  arm <- area(allmsdm[[m]], na.rm=TRUE) # ## applies a correction for latitude, to km2
-  
-  tempm <- sum(values(arm ), na.rm = TRUE)
-  
-  recebemsdm <- rbind(recebemsdm, tempm)
-}
-
-recebemsdm$sp <- names(allmsdm)
-
-recebemsdm$binomial<- sub('_', ' ', firstup(recebemsdm$sp) )
-
-recebemsdm$sp <-NULL
-
-colnames(recebemsdm) <- c('Potential range', 'binomial')
-
-presentrangesmsdm <- recebemsdm
-
-presentrangesmsdm$facet <- 'Present msdm not restricted'
-presentrangesmsdm$period <- 'Present msdm not restricted'
-presentrangesmsdm$scenario <- 'Present msdm not restricted'
-presentrangesmsdm$gcm <- 'Present msdm not restricted'
-
-hist(presentranges$`Potential range`- presentrangesmsdm$`Potential range`)
-
-# Final table
-
-presentrangesmsdm
-
-allrangesreal <- rbind( allrangesan, presentrangesmsdm)
-# Adding accessible area
-
-allranges_tabler <- left_join(allrangesan, recebea, by='binomial')
-
-end <- print(Sys.time())
-
-print(end-start) # 
-

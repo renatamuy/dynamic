@@ -1,9 +1,9 @@
-# Range overlap Future
+# Range overlap Future SSP585 --------------------------------------------------------------------------------
 # Building loop for individual maps for every scenario, GCM and period
 
 options(digits = 3, scipen = 999)
 
-setwd(projdir)
+setwd(here())
 
 source('00_packages.R')
 
@@ -14,6 +14,7 @@ setwd('Projection')
 list.files()
 
 setwd(paste0('BCC-CSM2-MR_ssp585_2081-2100_27kms/','/Ensemble/W_MEAN/MAX_TSS/'))
+
 all <- stack(list.files(pattern='.tif$'))
 
 setwd(aa)
@@ -24,19 +25,7 @@ plot(all_aa$aselliscus_stoliczkanus)
 
 allm <- mask(all, all_aa)
 
-plot(allm$aselliscus_stoliczkanus)
-
-plot(allm$tadarida_teniotis)
-
-plot(allm$aselliscus_stoliczkanus + allm$tadarida_teniotis)
-  
-hist(values(allm$aselliscus_stoliczkanus + allm$tadarida_teniotis))
-ck <- allm$aselliscus_stoliczkanus + allm$tadarida_teniotis
-values(ck)[values(ck) != 2] = NA
-arck <- area(ck, na.rm=TRUE)
-cksoma <- sum(values(arck),  na.rm = TRUE)
-cksoma
-table(values(allm))
+allm[values(allm)==0] <- NA
 
 recebeself <- data.frame()
 
@@ -69,13 +58,16 @@ getwd()
 
 rexpo <- recebeself %>% arrange(desc(area_overlapped_future))
 
-setwd(projdir)
+setwd(here())
 
 setwd('range_tables')
 
-write.xlsx(rexpo, 'range_overlap_future.xlsx', row.names = FALSE)
+write.xlsx(rexpo, 'range_overlap_future_R1.xlsx', row.names = FALSE)
 
-withself <- read.xlsx('range_overlap_future.xlsx', sheetIndex = 1)
+# Read -------------------------------------------------------------------------------------------------------
+
+withself <- read.xlsx('range_overlap_future_R1.xlsx', sheetIndex = 1)
+
 head(withself)
 
 omatrix <- reshape(withself, direction="wide", idvar="sp2", timevar="sp1")
@@ -98,6 +90,6 @@ oheatfut <- ggplot(data=withself, aes(y = sp1, x=sp2, fill =area_overlapped_futu
 oheatfut
 getwd()
 
-fign <- paste0('Fig_overlap_future', version_suffix, '.jpg')
+fign <- paste0('Fig_overlap_future_R1_', version_suffix, '.jpg')
 ggsave(filename = fign, oheatfut, width =33, height = 29, units = 'cm', dpi=600)
 ##############################################################################################################

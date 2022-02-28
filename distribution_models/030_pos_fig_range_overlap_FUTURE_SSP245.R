@@ -23,7 +23,7 @@ all_aa <- stack(list.files(pattern='.tif$'))
 plot(all_aa$aselliscus_stoliczkanus)
 
 allm <- mask(all, all_aa)
-
+allm[values(allm)==0] <- NA
 plot(allm$aselliscus_stoliczkanus)
 
 plot(allm$tadarida_teniotis)
@@ -73,9 +73,9 @@ setwd(here())
 
 setwd('range_tables')
 
-write.xlsx(rexpo, 'range_overlap_future_SSP245.xlsx', row.names = FALSE)
+write.xlsx(rexpo, 'range_overlap_future_SSP245_R1.xlsx', row.names = FALSE)
 
-withself <- read.xlsx('range_overlap_future_SSP245.xlsx', sheetIndex = 1)
+withself <- read.xlsx('range_overlap_future_SSP245_R1.xlsx', sheetIndex = 1)
 head(withself)
 
 omatrix <- reshape(withself, direction="wide", idvar="sp2", timevar="sp1")
@@ -99,6 +99,6 @@ oheatfut <- ggplot(data=withself, aes(y = sp1, x=sp2, fill =area_overlapped_futu
 oheatfut
 getwd()
 
-fign <- paste0('Fig_overlap_future_SSP245_', version_suffix, '.jpg')
+fign <- paste0('Fig_overlap_future_SSP245_R1_', version_suffix, '.jpg')
 ggsave(filename = fign, oheatfut, width =33, height = 29, units = 'cm', dpi=600)
 ##############################################################################################################

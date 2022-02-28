@@ -253,16 +253,3 @@ rcompo <- gridExtra::grid.arrange(fr, rmodel, nrow = 2, ncol=1)
 ggsave(filename = fig_range, width =28, height = 39, units = 'cm', dpi=600, rcompo)
 
 #############################################################################################################
-# Range and people BUILDING
-# SLOW
-pop <- raster('D://OneDrive - Massey University//_env//human_population//worldpop//ppp_2020_1km_Aggregated.tif')
-
-plot(pop)
-
-#mr <- resample(allm, pop)
-
-# Resampling modelled species range to pop
-
-#mp <- allm / pop
-
-#############################################################################################################

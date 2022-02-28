@@ -1,9 +1,8 @@
 #' ----
-#' Range overlap
+#' Range overlap SSP245
 #' ---- 
 
 # prepare r ---------------------------------------------------------------
-
 
 options(digits = 3, scipen = 999)
 
@@ -12,54 +11,6 @@ setwd(here())
 source('00_packages.R')
 
 source('01_settings.R')
-
-# richness map ------------------------------------------------------------
-setwd(aa)
-all_aa <- stack(list.files(pattern='.tif$'))
-
-setwd(binrasterdir)
-
-all <- stack(list.files(pattern='.tif$'))
-
-allm <- mask(all, all_aa)
-
-unique(values(allm))
-
-recebe <- data.frame()
-
-for(i in names(allm))
-  for(j in rev(names(allm)) )
-  {
-    if (i == j){
-      next
-    }
-    summed <- allm[[i]] + allm[[j]]
-    
-    values(summed)[values(summed) != 2] = NA
-    
-    ar <- area(summed, na.rm=TRUE)
-    
-    meui <- i
-    meuj <- j
-    areasoma <- sum(values(ar),  na.rm = TRUE)
-    
-    aux <- data.frame(sp1= meui, sp2=meuj ,area_overlapped= areasoma)
-    recebe <- rbind(recebe, aux)
-    
-    print(i)
-    print(j) 
-  }
-
-head(recebe)
-
-getwd()
-
-rexpo <- recebe %>% arrange(desc(area_overlapped))
-
-setwd(here())
-setwd('range_tables')
-
-write.xlsx(rexpo, 'range_overlap_present.xlsx', row.names = FALSE)
 
 # heatmap present ---------------------------------------------------------
 
@@ -88,14 +39,13 @@ oheat <- ggplot(data=withself, aes(y = sp1, x=sp2, fill =area_overlapped ) ) +
   ylab('') +xlab('') +labs(fill = "Area overlap (sqkm)        ") 
 
 oheat
-getwd()
 
-fign <- paste0('Fig_overlap_present_', version_suffix, '.jpg')
-ggsave(filename = fign, oheat, width =33, height = 29, units = 'cm', dpi=600)
+#fign <- paste0('Fig_overlap_present_', version_suffix, '.jpg')
+#ggsave(filename = fign, oheat, width =33, height = 29, units = 'cm', dpi=600)
 
 # heatmap future ---------------------------------------------------------
 
-withselff <- read.xlsx('range_overlap_future_SSP245.xlsx', sheetIndex = 1)
+withselff <- read.xlsx('range_overlap_future_SSP245_R1.xlsx', sheetIndex = 1)
 head(withselff)
 
 omatrixf <- reshape(withself, direction="wide", idvar="sp2", timevar="sp1")
@@ -165,7 +115,7 @@ oheatdifr<- ggplot(data=withdif, aes(y = sp1, x=sp2, fill =dif ) ) +
 
 oheatdifr
 
-figr <- paste0('Fig_overlap_supplements_SSP245_', version_suffix, '.jpg')
+figr <- paste0('Fig_overlap_supplements_SSP245_R1', version_suffix, '.jpg')
 ggsave(filename = figr, oheatdifr, width =33, height = 29, units = 'cm', dpi=600)
 
 
@@ -209,7 +159,7 @@ oheatdifpct
 
 head(withdif)
 
-fign <- paste0('Fig_overlap_shift_SSP245_', version_suffix, '.jpg')
+fign <- paste0('Fig_overlap_shift_SSP245_R1_', version_suffix, '.jpg')
 ggsave(filename = fign, oheatdifpct, width =33, height = 29, units = 'cm', dpi=600)
-write.xlsx(withdif, 'range_overlap_shift_SSP245.xlsx', row.names = FALSE)
-
+write.xlsx(withdif, 'range_overlap_shift_SSP245_R1.xlsx', row.names = FALSE)
+#-------------------------------------------------------------------------------------------------------------

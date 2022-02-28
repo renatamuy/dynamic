@@ -1,6 +1,5 @@
 ##############################################################################################################
-# Old Richness maps
-# Warning: slow!
+# Supplementary plots (SLOW)
 ##############################################################################################################
 
 options(digits = 3, scipen = 999)
@@ -29,8 +28,6 @@ poly <- rnaturalearth::ne_coastline() # not used for zonal stats
 setwd(aa)
 all_aa <- stack(list.files(pattern='.tif$'))
 
-plot(all_aa)
-
 setwd(binrasterdir)
 
 all <- stack(list.files(pattern='.tif$'))
@@ -57,14 +54,11 @@ values(richness2)[values(richness2) == 0] = NA
 
 # Compare with richness maps intersected
 ##############################################################################################################
-# Cutoff (just exploring)
-# Hotspots of sarbecovirus diversity (present)
-##############################################################################################################
+# Cutoff (exploring) - Hotspots of sarbecovirus diversity (present) ------------------------------------------
+
 hist(richness2)
 cutoff <- 10
 r3 <- richness2
-
-# Select cutoff value. If you can modell all species, go for 10
 values(r3)[values(r3) < cutoff ] = NA  
 
 mypalhot <- viridisLite::turbo(10)
@@ -92,13 +86,11 @@ hotspots
 
 spol <-sf:::as_Spatial(worldmap$geom)
 
-##############################################################################################################
 # Zonal statistics
 
 testando <- raster::extract( r3, worldmap,  fun=sum, na.rm=TRUE, df=TRUE, weights = FALSE, sp=TRUE) 
 head(testando)
 ##############################################################################################################
-# Check
 test1 <- st_as_sf(testando)
 test1
 ggplot() +
@@ -173,7 +165,6 @@ those_tidy <- those %>% as_tibble() %>%
 setwd(projdir)
 
 #dir.create('hotspots')
-
 setwd('hotspots')
 
 #write.xlsx(those_tidy, paste0(version_suffix,'max_richness_per_country_AA.xlsx'))
@@ -197,7 +188,7 @@ mappol <- ggplot() +
 
 mappol
 
-# Richness in continuous space
+# Richness in continuous space--------------------------------------------------------------------------------
 ##############################################################################################################
 rr <-data.frame(rasterToPoints(richness2))
 
@@ -236,11 +227,11 @@ mappxasia <- ggplot() +
 
 mappxasia
 
-# Exporting fig
+# Exporting fig ----------------------------------------------------------------------------------------------
 
-fig1n <- paste0('Figure 1_grob_abc_', version_suffix, '.jpg')
-ggsave(filename = fig1n, gridExtra::grid.arrange(arrangeGrob(mappol, mappx, nrow=2),mappxasia, ncol = 2),
-       width = 25, height=20, units='cm')
+#fig1n <- paste0('Figure 1_grob_abc_', version_suffix, '.jpg')
+#ggsave(filename = fig1n, gridExtra::grid.arrange(arrangeGrob(mappol, mappx, nrow=2),mappxasia, ncol = 2),
+#       width = 25, height=20, units='cm')
 
 #ggsave(filename = fig1n, gridExtra::grid.arrange(mappx,mappol, nrow = 2))
 # Exporting raster with zeroes 
@@ -258,16 +249,9 @@ print(mappxasia, vp = mainmap)
 insetmap <- viewport(width = 0.30, height = 0.3, x = 0.32, y = 0.8)
 print(mappx, vp = insetmap) 
 
-##############################################################################################################
-##############################################################################################################
-##############################################################################################################
-#  CLIMATE CHANGE FIGS
-##############################################################################################################
-##############################################################################################################
+#  CLIMATE CHANGE FIGS----------------------------------------------------------------------------------------
 setwd(enmresultsdir)
-
 setwd('Projection')
-
 list.files()
 
 recebe <- data.frame()
@@ -289,12 +273,10 @@ for(f in list.files() ) {
   
   ##################################################################
   # Exporting spatially restricted files in the future in a folder
-  
   dir.create('range')
   setwd('range')
   filenamefutrange <- 'range.RData'
   save(presm, file = filenamefutrange)
-  
   #######################################################
 
   richness <- sum(presm, na.rm=TRUE) 
@@ -320,10 +302,6 @@ for(f in list.files() ) {
 
 recebe %>% group_by(period) %>% skim()
 
-# Facet this on ggplot :)
-table(recebe$period, recebe$layer)
-table(recebe$scenario)
-
 paste0( 'Total number of species to be plotted: ', length(names(presm) )) 
 
 # Slow plots  ################################################################################################
@@ -336,160 +314,60 @@ map_future <- ggplot() +
   ggtitle( 'Future hotspots of sarbecovirus hosts' )  + 
   geom_tile(data=recebe, aes(x=x, y=y, fill=layer) ) + 
   facet_grid(gcm+scenario~period) + #(period+scenario~gcm)
-  #scale_fill_viridis_c(option="cividis", na.value= "white") +
   scale_fill_gradientn(colours = pal, breaks=c(5, 10, 15) ) +
   maptheme +
-  theme(plot.background = element_rect(fill=NA, color=NA), legend.title=element_blank(), plot.title=element_text(size=13, face = "italic")) +
+  theme(plot.background = element_rect(fill=NA, color=NA), 
+        legend.title=element_blank(), 
+         plot.title=element_text(size=13, face = "italic")) +
   ylab('Latitude') + xlab('Longitude')
 
 map_future
 
-# Histogram simple (Slow!)
+# R1 map future -----------------------------------------------------------------
 
-#
-bins <- 8
-cols <- c("darkblue","darkred")
-colGradient <- colorRampPalette(cols)
-colGradient <- colorRampPalette(pal)
-cut.cols <- colGradient(bins)
-cuts <- cut(recebe$layer,bins)
+recebeb <- recebe %>% filter(!period %in% c("2041-2060", "2061-2080"))
+unique(recebeb$period)
 
-names(cuts) <- sapply(cuts,function(t) cut.cols[which(as.character(t) == levels(cuts))])
-#
+figs14 <- ggplot() +
+    geom_sf(data=worldmap, fill="white", col="grey40", size=0.3, alpha=0.8) +
+  coord_sf(crs = st_crs(crs(worldmap)), ylim = c(-35, 80), xlim = c(-20, 160))+
+  ggtitle( 'Future hotspots of sarbecovirus hosts' )  + 
+  geom_tile(data=recebeb, aes(x=x, y=y, fill=layer) ) + 
+  facet_grid(gcm+scenario~period) +
+  scale_fill_gradientn(colours = pal, breaks=c(5, 10, 15) ) +
+  maptheme +
+  labs(fill='Habitat \n suitability')+
+  theme(legend.text = element_text(size=13), 
+        legend.position = "bottom", 
+        plot.background = element_rect(fill=NA, color=NA), 
+            plot.title=element_text(size=13, face = "italic")) +
+  ylab('Latitude') + xlab('Longitude')
 
-histfut <- ggplot(data=recebe, aes( x=layer, fill=cut(layer,bins) ), alpha=0.8)+
-  #geom_histogram(binwidth=1,  colour="black",
-  #fill="mintcream",  alpha=0.8)+
-  geom_histogram(alpha=0.8)+#bins = 9
-  facet_grid(gcm+scenario~period) + 
-  scale_y_log10()+
-  scale_color_manual(values=cut.cols,labels=levels(cuts)) +
-  scale_fill_manual(values=cut.cols,labels=levels(cuts))+
-  geom_vline(aes(xintercept=mean(layer)),
-             color="black", linetype="dashed", size=1)+
-  geom_vline(aes(xintercept=max(layer)),
-             color="firebrick3", linetype="dashed", size=1)+
-  labs(x='Number of sarbecovirus host species') +
-  theme_bw()+theme(strip.background =element_rect(fill="white"),
-                   legend.title=element_text('Host species'),
-                   legend.position="none") 
-
-histfut
-
-# Inset in Asia
-# Inset in Europe
-
-############# Exporting
-
-setwd(projdir)
-
+# Figure S14  --------------------------------------------------------------------
+setwd(here())
 setwd('hotspots')
+figR1_scenarios <- paste0('Figure_S14', version_suffix, '.jpg')
+ggsave(filename = figR1_scenarios,figs14, width = 18, height=25, units='cm')
 
-figfutcompo <- gridExtra::grid.arrange(map_future, histfut, nrow = 2)
-
-figfutcomponame <- paste0('Figure_Future_hist',version_suffix, '.jpg')
-
-ggsave(filename = figfutcomponame, width =34, height = 38, units = 'cm', dpi=600, figfutcompo)
-
-# No log
+############# Exploring
 require(dplyr)
 
-table(recebe$layer)
+inspecting <- aggregate(layer ~  gcm+scenario+period, data=c, max)
 
-inspecting <- aggregate(layer ~  gcm+scenario+period, data=recebe, mean)
-inspecting
+#write.xlsx2(table_avrich, file='max_richness_future.xlsx')
 
-summary(recebe$layer)
-
-table_avrich <- inspecting %>%
-  pivot_wider(names_from = "scenario", 
-              values_from = "layer")
-              
-write.xlsx2(table_avrich, file='average_richness_future.xlsx')
-
-inspectingmac <- aggregate(layer ~ gcm+scenario+period, data=recebe, max)
-inspectingmac
-
-inspectingmac %>%
+inspecting %>%
   pivot_wider(names_from = "scenario", 
               values_from = "layer")
 
+q <- recebe %>% filter(scenario == 'ssp245', period== '2081-2100') 
 
-inspectingmin <- aggregate(layer ~ gcm+scenario+period, data=recebe, min)
-inspectingmin
-
-inspectingmin %>%
-  pivot_wider(names_from = "scenario", 
-              values_from = "layer")
+table(q$layer) # 1 value
 
 inspectingmed <- aggregate(layer ~ gcm+scenario+period, data=recebe, median)
-inspectingmed
 
 inspectingmed %>%
   pivot_wider(names_from = "scenario", 
               values_from = "layer")
 
-#########################################################################
-######## Building ############################################################################################
-
-#for(f in list.files()) {print(f)
-
-# Suitability in future
-setwd(paste0(f,'/Ensemble/W_MEAN/'))
-suit <- stack(list.files(pattern='.tif'))
-print(list.files())
-
-# Binary in future
-setwd(paste0(f,'/Ensemble/W_MEAN/MAX_TSS/'))
-pres <- stack(list.files(pattern='.tif'))
-values(richness)[values(richness) < 0] = 0
-
-# With NAs
-
-richness <- sum(all, na.rm=TRUE) 
-richness2 <- richness 
-values(richness2)[values(richness2) == 0] = NA
-maxpercountry <- raster::extract( richness2, worldmap,  fun=max, na.rm=TRUE, df=TRUE, weights = FALSE, sp=TRUE) 
-
-# Figs 
-# Per nation
-mappol <- ggplot() +
-  geom_sf(data=st_as_sf(maxpercountry), aes(fill=sarbeco ), col="black", size=0.3, alpha=0.96)  +
-  scale_fill_viridis_c(option="cividis", na.value= "mintcream", alpha = .8)+  #trans = "sqrt"
-  ggtitle( f )  + #'B. Hotspots of sarbecovirus hosts per nation'
-  maptheme + theme(legend.title=element_blank(), plot.title=element_text(size=13, face = "italic"))
-
-# Richness in continuous space
-##############################################################################################################
-rr <-data.frame(rasterToPoints(richness2))
-
-mappx <- ggplot() + 
-  geom_sf(data=st_as_sf(maxpercountry), fill='white', col="grey40", size=0.2, alpha=0.8) + #poly #"mintcream"
-  ggtitle( f)  + #'A. Spatially explicit hotspots of sarbecovirus hosts' 
-  geom_tile(data=rr , aes(x=x, y=y, fill=layer) ) + 
-  scale_fill_viridis_c(option="cividis", na.value= "white") +
-  maptheme +
-  theme(plot.background = element_rect(fill=NA, color=NA), legend.title=element_blank(), plot.title=element_text(size=13, face = "italic")) +
-  ylab('Latitude') + xlab('Longitude')
-
-mappx
-# Exporting fig
-fig1n <- paste0('Figure 1 Future',version_suffix, '.jpg')
-ggsave(filename = fig1n, gridExtra::grid.arrange(mappx,mappol, nrow = 2))
-
-
-}
-
-##############################################################################################################
-# Developing individual figs for all future combinations (Under construction)
-
-for( p in periods){
-  print(p)
-  for(s in scenarios)
-  {
-    print(s)
-    for(g in gcms)
-    {print(g)}
-  }
-  
-}
+#end------------------------------------------------------------------------------

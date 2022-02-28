@@ -1,14 +1,15 @@
 #' ----
 #' Contents
-#' Figure main text: Inset in Europe and Asia
-#' Figure ggridges: Shifts for temperature and hotspots
-#' Figure supplements: Richness ~ Effort
-#' Figure supplements: Difference in richness hotspots
-#' Centroids of richness and temperature shift on their locations in the present and future
+#' Figure: Difference in richness hotspots
+#' Figure: Inset in Asia
+#' Figure: Inset in Europe
+#' Figure: Richness ~ Effort
+#' Figure 4: ggridges - shifts for temperature and hotspots
+#' Centroids of richness and temperature (present and future)
+#' S9 Figure: hotspots inset
 #' ----
 
 # prepare r ---------------------------------------------------------------
-
 warning('SLOW')
 
 # directory
@@ -47,18 +48,20 @@ richness
 # richness future ---------------------------------------------------------
 
 # directory
+
+# 585
 setwd(enmresultsdir)
 setwd("Projection")
-
 setwd("BCC-CSM2-MR_ssp585_2081-2100_27kms/Ensemble/W_MEAN/MAX_TSS/")
 
 fut <- raster::stack(dir(pattern = ".tif$"))
 futm <- raster::mask(fut, all_aa)
 richnessf <- sum(futm, na.rm = TRUE) 
+table(values(richnessf))
 
+# 245
 setwd(enmresultsdir)
 setwd("Projection")
-
 setwd("BCC-CSM2-MR_ssp245_2081-2100_27kms/Ensemble/W_MEAN/MAX_TSS/")
 
 fut245 <- raster::stack(dir(pattern = ".tif$"))
@@ -82,14 +85,12 @@ summary(values(richnessf245))
 
 rdif_df245 <- data.frame(rasterToPoints(rdifm245))
 
-
 # centroids
 cdif <- colMeans(xyFromCell(rdifm, which(rdif[] == max(values(rdif)))))
 closs <- colMeans(xyFromCell(rdifm, which(rdif[] == min(values(rdif)))))
 
 cdif <- colMeans(xyFromCell(rdifm, which(rdif[] == max(values(rdif)))))
 closs <- colMeans(xyFromCell(rdifm, which(rdif[] == min(values(rdif)))))
-
 
 # Centroid future
 colMeans(xyFromCell(richness, which(richness[] == max(values(richness)))))
@@ -149,12 +150,12 @@ mapdifa <- ggplot() +
   theme_bw(base_size = 15) + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         plot.title = element_text(size = 16) )
-#mapdifa
+
+mapdifa
 
 # Difference Map for SSP245 
 
-#cfut245
-
+cfut245
 mapdifa245 <- ggplot() + 
   ggtitle( "Shift" ) + #C. Difference between future and present
   geom_tile(data = rdif_df245, aes(x = x, y = y, fill = layer), alpha = 0.8) + 
@@ -177,17 +178,17 @@ mapdifa245 <- ggplot() +
   theme_bw(base_size = 15) + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         plot.title = element_text(size = 16) )
-#mapdifa
+mapdifa
 
 # export
 setwd(here())
 setwd("hotspots")
 
-#figcentroids <- paste0("Figure_inset_", version_suffix, ".png")
+figcentroids <- paste0("Figure_inset_", version_suffix, ".png")
 #ggsave(filename = figcentroids, plot = mapdifa,
 #       width = 25, height = 22, units = "cm", dpi = 600)
 
-#figcentroids245 <- paste0("Figure_inset_SSP245_", version_suffix, ".png")
+figcentroids245 <- paste0("Figure_inset_SSP245_", version_suffix, ".png")
 #ggsave(filename = figcentroids245, plot = mapdifa245,
 #       width = 25, height = 22, units = "cm", dpi = 600)
 
@@ -213,8 +214,7 @@ maprdf <- ggplot() +
   theme_bw(base_size = 15) + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         plot.title = element_text(size = 15)  ) 
-
-#maprdf
+maprdf
 
 # WORLD in present ----
 
@@ -233,8 +233,7 @@ worldpresent <- ggplot() +
                          pad_x = unit(.1, "cm"), pad_y = unit(.7, "cm"),
                          style = north_arrow_fancy_orienteering)
 
-#worldpresent
-
+worldpresent
 
 # map present zoom ----
 zpresent <- ggplot() + 
@@ -251,15 +250,13 @@ zpresent <- ggplot() +
   theme_bw(base_size = 15) + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         plot.title = element_text(size = 16) )
-
-#zpresent
+zpresent
 
 
 # plot future map ---------------------------------------------------------
 
 # richness
 richnessfm <- mask(x = richnessf, mask = worldmap)
-
 
 richnessfm245 <- mask(x = richnessf245, mask = worldmap)
 
@@ -278,8 +275,7 @@ mapfuture <- ggplot() +
   theme_bw(base_size = 15) + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         plot.title = element_text(size = 15) ) 
-
-#mapfuture
+mapfuture
 
 # WORLD in future ----
 
@@ -299,7 +295,7 @@ mapfutureworld <- ggplot() +
                          style = north_arrow_fancy_orienteering)
 
 
-#mapfutureworld
+mapfutureworld
 
 
 # zoom in future ---------------------------------------------------------
@@ -317,7 +313,7 @@ zfuture <- ggplot() +
   theme_bw(base_size = 15) + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         plot.title = element_text(size = 16) )
-#zfuture
+zfuture
 
 # export ------------------------------------------------------------------
 
@@ -327,16 +323,16 @@ setwd(here())
 setwd("hotspots")
 require(gridExtra)
 
-#figcompworld <- paste0("Fig_2_WORLD_PRESENT_FUTURE_", version_suffix, ".png")
+figcompworld <- paste0("Fig_2_WORLD_PRESENT_FUTURE_", version_suffix, ".png")
 #ggsave(filename = figcompworld, width = 28, height = 34, units = "cm", dpi = 600, 
 #       gridExtra::grid.arrange(worldpresent, mapfutureworld))
 
-#figcomplarge <- paste0("Figure_world_", version_suffix, ".png")
+#figcomplarge <- paste0("Figure_4_world_", version_suffix, ".png")
 #gridExtra::grid.arrange(maprdf, mapfuture, mapdifa, ncol = 3)
 #ggsave(filename = figcomplarge, width = 35, height = 29, units = "cm", dpi = 600, 
 #       gridExtra::grid.arrange(maprdf, mapfuture, ncol = 2))
 
-#figcompz <- paste0("Figure_zoom_", version_suffix, ".png")
+#figcompz <- paste0("Figure_4_zoom_", version_suffix, ".png")
 #ggsave(filename = figcompz, width = 38, height = 29, units = "cm", dpi = 600, 
  #      gridExtra::grid.arrange(zpresent, zfuture, mapdifa, ncol = 3))
 
@@ -345,80 +341,77 @@ require(gridExtra)
 #ggsave(filename = figcomp2, width = 34, height = 28, units = "cm", dpi = 600, 
 #       gridExtra::grid.arrange(zpresent, zfuture, ncol = 2))
 
+#-------------------------------------------------------------------------------------------------------------
+# Exporting terrestrial rasters of bat host hotsposts
+setwd(here())
+setwd('hotspots')
 
-# Exporting Masked rasters of hotsposts
 # writeRaster(richnessm, filename = "richnessm.tif", format = "GTiff", 
 #             overwrite = TRUE, progress = "text", options=c("COMPRESS=NONE", "TFW=YES"))
 
-# writeRaster(richnessfm, filename = "richnessfm.tif", format = "GTiff", 
-#             overwrite = TRUE, progress = "text", options=c("COMPRESS=NONE", "TFW=YES"))
+ writeRaster(richnessfm, filename = "richness_2100_BCC_SSP585.tif", format = "GTiff", 
+             overwrite = TRUE, progress = "text", options=c("COMPRESS=NONE", "TFW=YES"))
 
-# europe frame ------------------------------------------------------------
+# europe frame -----------------------------------------------------------------------------------------------
 
 mapeurope <- ggplot() + 
-  ggtitle( "A. Present" ) + 
+  ggtitle( "A" ) + 
   geom_tile(data = rdf, aes(x = x, y = y, fill = layer), alpha = 0.8) + 
   geom_sf(data = st_as_sf(worldmap), fill = NA, col = "grey40", size = 0.4) + 
   coord_sf(crs = st_crs(crs(worldmap)), ylim = c(34, 72), xlim = c(-20, 50)) + #poly #"mintcream"
   scale_fill_gradientn(colours = pal, breaks = c(0, 5, 10), limits = col.range) + 
-  labs(fill = "Potential \nspecies \nrichness", x = "Longitude", y = "Latitude") + 
+  labs(fill = "Potential \nrichness", x = "Longitude", y = "Latitude") + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         legend.title = element_blank(), 
         plot.title = element_text(size = 14, face = "italic")) + 
   theme_bw()
-
 mapeurope
 
 mapfuteurope <- ggplot() + 
-  ggtitle( "B. Future" ) + 
+  ggtitle( "B" ) + 
   geom_tile(data = rfdf, aes(x = x, y = y, fill = layer), alpha = 0.8) + 
   geom_sf(data = st_as_sf(worldmap), fill = NA, col = "grey40", size = 0.4) + 
   coord_sf(crs = st_crs(crs(worldmap)), ylim = c(34, 72), xlim = c(-20, 50)) + #poly #"mintcream"
   scale_fill_gradientn(colours = pal, breaks = c(0, 5, 10), limits = col.range) + 
-  labs(fill = "Potential \nspecies \nrichness", x = "Longitude", y = "Latitude") + 
+  labs(fill = "Potential \nrichness", x = "Longitude", y = "Latitude") + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         legend.title = element_blank(), 
         plot.title = element_text(size = 14, face = "italic")) + 
   theme_bw()
-
 mapfuteurope
 
 # SEAsia frame present
 mapseasia <- ggplot() + 
-  ggtitle( "C. Present" ) + 
+  ggtitle( "C" ) + 
   geom_tile(data = rdf, aes(x = x, y = y, fill = layer), alpha = 0.8) + 
   geom_sf(data = st_as_sf(worldmap), fill = NA, col = "grey40", size = 0.4) + 
   coord_sf(crs = st_crs(crs(worldmap)), c(-10, 50), xlim = c(70, 126)) + 
   scale_fill_gradientn(colours = pal, breaks = c(0, 5, 10), limits = col.range) + 
-  labs(fill = "Potential \nspecies \nrichness", x = "Longitude", y = "Latitude") + 
+  labs(fill = "Potential \nrichness", x = "Longitude", y = "Latitude") + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         legend.title = element_blank(), 
         plot.title = element_text(size = 14, face = "italic")) + 
   theme_bw()
-
 mapseasia
 
 # SEAsia frame future
 mapfutseasia <- ggplot() + 
-  ggtitle( "D. Future" ) + 
+  ggtitle( "D" ) + 
   geom_tile(data = rfdf, aes(x = x, y = y, fill = layer), alpha = 0.8) + 
   geom_sf(data = st_as_sf(worldmap), fill = NA, col = "grey40", size = 0.4) + 
   coord_sf(crs = st_crs(crs(worldmap)), c(-10, 50), xlim = c(70, 126)) + 
   scale_fill_gradientn(colours = pal, breaks = c(0, 5, 10), limits = col.range) + 
-  labs(fill = "Potential \nspecies \nrichness", x = "Longitude", y = "Latitude") + 
+  labs(fill = "Potential \nrichness", x = "Longitude", y = "Latitude") + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         legend.title = element_blank(), 
         plot.title = element_text(size = 14, face = "italic")) + 
   theme_bw()
-
 mapfutseasia
 
 # Exporting zooms with same scale for legend
-warning('SLOW')
-
-figcomposquare <- paste0("Fig01_", version_suffix, ".png")
-ggsave(filename = figcomposquare, width = 30, height = 30, units = "cm", dpi = 600, 
-       gridExtra::grid.arrange( mapeurope, mapfuteurope, mapseasia, mapfutseasia, ncol = 2, nrow = 2))
+figcomposquare <- paste0("Fig_2_europe_SEasia_", version_suffix, ".png")
+#ggsave(filename = figcomposquare, width = 36, height = 36, units = "cm", dpi = 600, 
+#       gridExtra::grid.arrange( mapeurope, mapfuteurope, mapseasia, mapfutseasia, ncol = 2, nrow = 2))
 
 
 # world difs stats and world map ------------------------------------------
@@ -444,16 +437,15 @@ mapdifw <- ggplot() +
   theme_bw(base_size = 16) + 
   theme(plot.background = element_rect(fill = NA, color = NA), 
         plot.title = element_text(size = 16) , legend.position = "none")
+mapdifw
 
-#mapdifw
-
-#figworldbrown <- paste0("Fig_world_spshift_BROWN_", version_suffix, ".png")
+figworldbrown <- paste0("Fig_world_spshift_BROWN_", version_suffix, ".png")
 #ggsave(filename = figworldbrown, plot = mapdifw,
 #       width = 30, height = 22, units = "cm", dpi = 600)
 
 #gridExtra::grid.arrange(mapdifw, mapdifa, ncol = 2)
 
-#figshift <- paste0("Fig_world_inset_shift_poster_BROWN_", version_suffix, ".png")
+figshift <- paste0("Fig_world_inset_shift_poster_BROWN_", version_suffix, ".png")
 #ggsave(filename = figshift, width = 42, height = 24, units = "cm", dpi = 600, 
 #       gridExtra::grid.arrange(mapdifw, mapdifa, ncol = 2))
 
@@ -482,6 +474,18 @@ t[401429]
 
 cellFromXY(t, cfut)
 t[400004]
+
+# Forest and hotspots
+forest <- raster("CMIP6_Land_Use_Harmonization_primf_2015.tif")
+forestfut <- raster("CMIP6_Land_Use_Harmonization_primf_SSP5_85_2100.tif")
+
+# Myanmar
+cellFromXY(forest, cfpres)
+forest[401429]
+
+cellFromXY(forestfut, cfut)
+# TYPE lat then long IN GOOGLE MAPS
+forestfut[400004]
 
 # Are the hotspots getting hotter?
 # Yes
@@ -545,46 +549,160 @@ zzf245$time <- 'future245'
 head(zzf245)
 zall <- rbind(zzz, zzf245)
 
-table(zzf245$layer)
-table(zfr$layer)
-
-
 summary(richnessm)
 summary(richnessfm)
 summary(richnessfm245)
 
-# Figure ridges ----------------------------------------------------------------------------------------------
+# Figure 4 ---------------------------------------------------------------------------------------------------
 
-figre245 <- zall %>%
-  filter(layer > 0) %>%
-  mutate(time = str_to_title(time)) %>%
-  ggplot(aes(x = bio_1, y = factor(layer), fill = time)) +
-  geom_density_ridges(aes(color = time, fill = time), alpha = .4, quantile_lines = TRUE, quantiles = 2) +
+figre245 <- zall %>% 
+  filter(layer > 0) %>% 
+  mutate(time = str_to_title(time)) %>% 
+  ggplot(aes(x = bio_1, y = factor(layer), fill = time)) + 
+  geom_density_ridges(aes(color = time, fill = time), alpha = .5, quantile_lines = TRUE, quantiles = 2) + 
   scale_fill_manual(values = c("firebrick3","gold3", "navy"), labels = c("Future SSP585", "Future SSP245", "Present")) +
   scale_color_manual(values = c("firebrick3","gold3", 'navy'), labels = c("Future SSP585", "Future SSP245", "Present")) +
-  labs(x = expression(paste('Average temperature (',~degree,'C)',sep='')), y = "Potential species richness", color = "", fill = "" ) +
-  theme_bw(base_size = 15) +
-  guides(color = guide_legend(reverse = TRUE), fill = guide_legend(reverse = TRUE))
+  labs(x = expression(paste('Average temperature (',~degree,'C)',sep='')), y = "Potential species richness", color = "", fill = "" ) + 
+  theme_bw(base_size = 15)
 
 figre245
 
-ggsave(filename = 'Fig04.png', width = 22, height = 26, units = "cm", dpi = 400, 
-       figre245)
+#ggsave(filename = 'Fig4_ridges_SSP245_SSP585.png', width = 22, height = 26, units = "cm", dpi = 400, 
+ #      figre245)
 
 end <- print(Sys.time())
 
 print(end-start)
 
-# Forest and hotspots
-forest <- raster("CMIP6_Land_Use_Harmonization_primf_2015.tif")
-forestfut <- raster("CMIP6_Land_Use_Harmonization_primf_SSP5_85_2100.tif")
+# Figure 4 R1---------------------------------------------------------------------------------------------------
+#  bring back my pixels
 
-# Myanmar
-cellFromXY(forest, cfpres)
-forest[401429]
+fig4r1 <- zall %>% filter(layer >0) %>%  
+  mutate(time = str_to_title(time)) %>% 
+  ggplot(aes(x = bio_1, y = factor(layer), fill = time)) +
+  geom_density_ridges(aes(point_color = time, point_fill = time, point_shape = time),
+                      alpha = 0.3, point_alpha = 0.4, 
+                      quantile_lines = TRUE, quantiles = 2, jittered_points = TRUE) +
+  scale_fill_manual(values = c("firebrick3","gold3", "navy"), labels = c("Future SSP585", "Future SSP245", "Present")) +
+  scale_color_manual(values = c("firebrick3","gold3", 'navy'), labels = c("Future SSP585", "Future SSP245", "Present"), guide = 'none') +
+  scale_discrete_manual(aesthetics = "point_shape", values = c(22, 22, 22), guide = 'none') +
+  scale_discrete_manual(aesthetics = "point_fill",  values = c("firebrick3","gold3", 'navy'), 
+                        labels = c("Future SSP585", "Future SSP245", "Present"), guide = 'none') +
+  scale_discrete_manual(aesthetics = "point_color",  values = c("firebrick3","gold3", 'navy'), guide = 'none') +
+  scale_alpha(guide = 'none')+
+  theme_bw(base_size = 15) +
+  labs(x = expression(paste('Average temperature (',~degree,'C)',sep='')), 
+       y = "Potential species richness", color = "", fill = "" ) +
+  guides( fill = guide_legend("Period")) 
+ 
+fig4r1
 
-cellFromXY(forestfut, cfut)
-# TYPE lat then long IN GOOGLE MAPS
-forestfut[400004]
+p + stat_summary(fun.data = mean_sdl, mult=1, 
+                 geom = "pointrange") + coord_flip()+
+  theme_classic()
 
+end_all <- print(Sys.time())
+
+print(end_all- start)
+
+ggsave(filename = 'Fig4_temperature_hotspots.png', width = 22, height = 26, units = "cm", dpi = 400, 
+      fig4r1)
+
+
+# Temperature seasonality ------------------------------------------------------------------------------------
+# Seasonality
+se <- raster("bio_4/bio_4.tif")
+sefut <- raster("bio_4/bio_4_2100_SSP585.tif")
+sefut245 <- raster('bio_4/bio_4_2100_SSP245.tif')
+
+sefut <- resample(sefut, se)
+sefut245 <- resample(sefut245, se)
+
+sedif <- sefut - se
+par(mfrow=c(2,1))
+plot(se)
+plot(sefut)
+
+# getting data
+zse <- data.frame(rasterToPoints(se ))
+zz <- left_join(zr, zse )
+zz$time <- "present"
+
+zfse <- data.frame(rasterToPoints(sefut))
+
+zzf <- left_join(zfr, zfse)
+zzf$time <- "future"
+
+head(zz)
+colnames(zzf) <- c( "x" , "y" , "layer", "bio_4", "time")
+
+zzz <- rbind(zz, zzf)
+
+# Add 245 scenario
+
+zft245 <- data.frame(rasterToPoints(sefut245))
+
+zzf245 <- left_join(zfr245, zft245 )
+
+zzf245$time <- "future"
+
+colnames(zzf245) <- c( "x" , "y" , "layer", "bio_4", "time")
+head(zzf245)
+
+zzz245 <- rbind(zz, zzf245)
+
+# distribution
+zabovep <-zzz %>% 
+  filter(layer > 10) %>% 
+  filter(time == 'present')
+
+zabovef <-zzz %>% 
+  filter(layer > 10) %>% 
+  filter(time == 'future')
+
+median(zabovef$bio_4) - median(zabovep$bio_4)
+
+setwd(here::here())
+setwd('hotspots')
+
+# 585 and 245 ridges ------------------------------------------------------------------------------------------
+head(zzz)
+
+zzf245$time <- 'future245'
+head(zzf245)
+seall <- rbind(zzz, zzf245)
+
+summary(richnessm)
+summary(richnessfm)
+summary(richnessfm245)
+
+# bio 4 ridges
+# discuss - hotspots becoming less seasonal
+
+sefig4r1 <- seall %>% filter(layer >0) %>%  
+  mutate(time = str_to_title(time)) %>% 
+  ggplot(aes(x = bio_4 /100, y = factor(layer), fill = time)) +
+  geom_density_ridges(aes(point_color = time, point_fill = time, point_shape = time),
+                      alpha = 0.3, point_alpha = 0.4, 
+                      quantile_lines = TRUE, quantiles = 2, jittered_points = TRUE) +
+  scale_fill_manual(values = c("firebrick3","gold3", "navy"), labels = c("Future SSP585", "Future SSP245", "Present")) +
+  scale_color_manual(values = c("firebrick3","gold3", 'navy'), labels = c("Future SSP585", "Future SSP245", "Present"), guide = 'none') +
+  scale_discrete_manual(aesthetics = "point_shape", values = c(22, 22, 22), guide = 'none') +
+  scale_discrete_manual(aesthetics = "point_fill",  values = c("firebrick3","gold3", 'navy'), 
+                        labels = c("Future SSP585", "Future SSP245", "Present"), guide = 'none') +
+  scale_discrete_manual(aesthetics = "point_color",  values = c("firebrick3","gold3", 'navy'), guide = 'none') +
+  scale_alpha(guide = 'none')+
+  theme_bw(base_size = 15) +
+  labs(x = expression(paste('Average seasonality (SD',~degree,'C)',sep='')),  #100*
+       y = "Potential species richness", color = "", fill = "" ) +
+  guides( fill = guide_legend("Period")) 
+
+sefig4r1
+
+end_all <- print(Sys.time())
+
+print(end_all - start)
+
+ggsave(filename = 'Fig4_seasonality_hotspots.png', width = 22, height = 26, units = "cm", dpi = 400, 
+       sefig4r1)
 # end ---------------------------------------------------------------------
