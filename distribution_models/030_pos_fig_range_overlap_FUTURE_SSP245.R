@@ -14,29 +14,16 @@ setwd('Projection')
 list.files()
 
 setwd(paste0('BCC-CSM2-MR_ssp245_2081-2100_27kms/','/Ensemble/W_MEAN/MAX_TSS/'))
+
 all <- stack(list.files(pattern='.tif$'))
 
 setwd(aa)
 
 all_aa <- stack(list.files(pattern='.tif$'))
 
-plot(all_aa$aselliscus_stoliczkanus)
-
 allm <- mask(all, all_aa)
+
 allm[values(allm)==0] <- NA
-plot(allm$aselliscus_stoliczkanus)
-
-plot(allm$tadarida_teniotis)
-
-plot(allm$aselliscus_stoliczkanus + allm$tadarida_teniotis)
-  
-hist(values(allm$aselliscus_stoliczkanus + allm$tadarida_teniotis))
-ck <- allm$aselliscus_stoliczkanus + allm$tadarida_teniotis
-values(ck)[values(ck) != 2] = NA
-arck <- area(ck, na.rm=TRUE)
-cksoma <- sum(values(arck),  na.rm = TRUE)
-cksoma
-table(values(allm))
 
 recebeself <- data.frame()
 
@@ -65,22 +52,23 @@ for(i in names(allm))
 
 head(recebeself)
 
-getwd()
-
 rexpo <- recebeself %>% arrange(desc(area_overlapped_future))
 
 setwd(here())
 
+#export---
+
 setwd('range_tables')
 
-write.xlsx(rexpo, 'range_overlap_future_SSP245_R1.xlsx', row.names = FALSE)
+write.xlsx(rexpo, 'overlap_future_SSP245_R1.xlsx', row.names = FALSE)
 
-withself <- read.xlsx('range_overlap_future_SSP245_R1.xlsx', sheetIndex = 1)
+withself <- read.xlsx('overlap_future_SSP245_R1.xlsx', sheetIndex = 1)
 head(withself)
 
 omatrix <- reshape(withself, direction="wide", idvar="sp2", timevar="sp1")
 
 omatrix
+
 head(rexpo)
 
 withself$sp1 <- sub('_', ' ', stringr::str_to_sentence(withself$sp1))
@@ -97,7 +85,6 @@ oheatfut <- ggplot(data=withself, aes(y = sp1, x=sp2, fill =area_overlapped_futu
   ylab('') +xlab('') +labs(fill = "Future area overlap (sqkm)") 
 
 oheatfut
-getwd()
 
 fign <- paste0('Fig_overlap_future_SSP245_R1_', version_suffix, '.jpg')
 ggsave(filename = fign, oheatfut, width =33, height = 29, units = 'cm', dpi=600)
