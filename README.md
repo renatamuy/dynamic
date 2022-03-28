@@ -7,7 +7,7 @@ CC0 1.0 Universal (CC0 1.0) Public Domain Dedication license.
 
 **Code guidelines**: [README](https://github.com/renatamuy/dynamic/blob/main/distribution_models/README.md)
 
-**[Preprint]**(https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1)
+**Preprint**: [https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1](https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1)
 
 <img src="https://github.com/renatamuy/dynamic/blob/main/anim_intersected.gif" width="800" height="700" />
 
