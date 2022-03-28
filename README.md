@@ -4,10 +4,9 @@
 
 **Workflow guidelines**: [README](https://github.com/renatamuy/dynamic/blob/main/distribution_models/README.md)
 
-**Data**: Dryad. DOI: [https://doi.org/10.5061/dryad.m63xsj440](https://doi.org/10.5061/dryad.m63xsj440) under a
-CC0 1.0 Universal (CC0 1.0) Public Domain Dedication license.
+**Data**: [Dryad](https://doi.org/10.5061/dryad.m63xsj440) under a CC0 1.0 Universal (CC0 1.0) Public Domain Dedication license.
 
-**Preprint**: [https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1](https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1)
+**Preprint**: [Biorxiv](https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1)
 
 <img src="https://github.com/renatamuy/dynamic/blob/main/anim_intersected.gif" width="800" height="700" />
 
