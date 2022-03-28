@@ -409,7 +409,7 @@ mapfutseasia <- ggplot() +
 mapfutseasia
 
 # Exporting zooms with same scale for legend
-figcomposquare <- paste0("Fig_2_europe_SEasia_", version_suffix, ".png")
+figcomposquare <- paste0("Fig1_europe_SEasia_", version_suffix, ".png")
 #ggsave(filename = figcomposquare, width = 36, height = 36, units = "cm", dpi = 600, 
 #       gridExtra::grid.arrange( mapeurope, mapfuteurope, mapseasia, mapfutseasia, ncol = 2, nrow = 2))
 
@@ -605,7 +605,7 @@ end_all <- print(Sys.time())
 
 print(end_all- start)
 
-ggsave(filename = 'Fig4_temperature_hotspots.png', width = 22, height = 26, units = "cm", dpi = 400, 
+ggsave(filename = 'Fig3_temperature_hotspots.png', width = 22, height = 26, units = "cm", dpi = 400, 
       fig4r1)
 
 
