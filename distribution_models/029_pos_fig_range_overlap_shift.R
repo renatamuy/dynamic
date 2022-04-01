@@ -1,4 +1,6 @@
 # Range overlap shifts SSP585---------------------------------------------------------------------------------
+# Figure S14
+# Figurs S15
 
 options(digits = 3, scipen = 999)
 
@@ -395,38 +397,38 @@ figover
 figover585 <- bigsup %>%  filter(type == 'SSP585') %>% 
   drop_na() %>% 
   ggplot(aes(x=pct_range_overlap_present,  y=pct_range_overlap_future, label=sp2)) + #label=species
-  geom_point(size=1)+  geom_smooth(se = FALSE, method = lm)+
+  geom_point(size=1.1) + #+  geom_smooth(se = FALSE, method = lm)+
+  geom_abline(intercept = 0, slope = 1) +
   facet_wrap(~species, ncol=3)+
   theme_bw()+
   ggtitle( '' )+
   ylim(-0.25, 1)+
   xlim(-0.25, 1)+
   xlab('Estimated % present overlap'  )+
-  #scale_fill_manual(values = c("gold3", "firebrick3"), labels = c( "Future SSP245", "Future SSP585")) +
-  #scale_color_manual(values = c("gold3","firebrick3"), labels = c( "Future SSP245", "Future SSP585")) +
-  ylab('Estimated % overlap in 2100 (SSP585)'  )+ geom_text_repel(size=3, fontface = "italic") +
+  ylab('Estimated % overlap in 2100 (SSP5-8.5)'  )+ geom_text_repel(size=3, fontface = "italic") +
   theme(plot.title.position = "plot",axis.title=element_text(size=15),
         legend.position="bottom", legend.direction="horizontal", strip.background = element_blank(), 
         strip.text = element_text(size = 10,  face = "italic"))
+
 
 figover585
 
 figover245 <- bigsup %>%  filter(type == 'SSP245') %>% 
   drop_na() %>% 
   ggplot(aes(x=pct_range_overlap_present,  y=pct_range_overlap_future, label=sp2)) + #label=species
-  geom_point(size=1)+  geom_smooth(se = FALSE, method = lm)+
+  geom_point(size=1.1)+  #geom_smooth(se = FALSE, method = lm)+
+  geom_abline(intercept = 0, slope = 1) +
   facet_wrap(~species, ncol=3)+
   theme_bw()+
   ggtitle( '' )+
   ylim(-0.25, 1)+
   xlim(-0.25, 1)+
   xlab('Estimated % present overlap'  )+
-  #scale_fill_manual(values = c("gold3", "firebrick3"), labels = c( "Future SSP245", "Future SSP585")) +
-  #scale_color_manual(values = c("gold3","firebrick3"), labels = c( "Future SSP245", "Future SSP585")) +
-  ylab('Estimated % overlap in 2100 (SSP245)'  )+ geom_text_repel(size=3, fontface = "italic") +
+  ylab('Estimated % overlap in 2100 (SSP2-4.5)'  )+ geom_text_repel(size=3, fontface = "italic") +
   theme(plot.title.position = "plot",axis.title=element_text(size=15),
         legend.position="bottom", legend.direction="horizontal", strip.background = element_blank(), 
         strip.text = element_text(size = 10,  face = "italic"))
+
 
 figover245
 
@@ -435,10 +437,10 @@ figover245
 figbigsup <- paste0('Fig_overlap_pct_supplents_', version_suffix, '.jpg')
 ggsave(filename = figbigsup, figover, width =33, height = 29, units = 'cm', dpi=600)
 
-figbigsup5 <- paste0('Fig_overlap_pct585_sup_', version_suffix, '.jpg')
+figbigsup5 <- paste0('Fig_S15_', version_suffix, '.jpg')
 ggsave(filename = figbigsup5, figover585, width =20, height = 30, units = 'cm', dpi=600)
 
-figbigsup2 <- paste0('Fig_overlap_pct245_sup_', version_suffix, '.jpg')
+figbigsup2 <- paste0('Fig_S14_', version_suffix, '.jpg')
 ggsave(filename = figbigsup2, figover245, width =20, height = 30, units = 'cm', dpi=600)
 
 #exporting bigsup

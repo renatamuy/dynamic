@@ -323,7 +323,7 @@ setwd(here())
 setwd("hotspots")
 require(gridExtra)
 
-figcompworld <- paste0("Fig_2_WORLD_PRESENT_FUTURE_", version_suffix, ".png")
+figcompworld <- paste0("Fig_WORLD_PRESENT_FUTURE_", version_suffix, ".png")
 #ggsave(filename = figcompworld, width = 28, height = 34, units = "cm", dpi = 600, 
 #       gridExtra::grid.arrange(worldpresent, mapfutureworld))
 
@@ -349,13 +349,13 @@ setwd('hotspots')
 # writeRaster(richnessm, filename = "richnessm.tif", format = "GTiff", 
 #             overwrite = TRUE, progress = "text", options=c("COMPRESS=NONE", "TFW=YES"))
 
- writeRaster(richnessfm, filename = "richness_2100_BCC_SSP585.tif", format = "GTiff", 
-             overwrite = TRUE, progress = "text", options=c("COMPRESS=NONE", "TFW=YES"))
+#writeRaster(richnessfm, filename = "richness_2100_BCC_SSP585.tif", format = "GTiff", 
+#             overwrite = TRUE, progress = "text", options=c("COMPRESS=NONE", "TFW=YES"))
 
 # europe frame -----------------------------------------------------------------------------------------------
 
 mapeurope <- ggplot() + 
-  ggtitle( "A" ) + 
+  ggtitle( "A. Present" ) + 
   geom_tile(data = rdf, aes(x = x, y = y, fill = layer), alpha = 0.8) + 
   geom_sf(data = st_as_sf(worldmap), fill = NA, col = "grey40", size = 0.4) + 
   coord_sf(crs = st_crs(crs(worldmap)), ylim = c(34, 72), xlim = c(-20, 50)) + #poly #"mintcream"
@@ -368,7 +368,7 @@ mapeurope <- ggplot() +
 mapeurope
 
 mapfuteurope <- ggplot() + 
-  ggtitle( "B" ) + 
+  ggtitle( "B. Future" ) + 
   geom_tile(data = rfdf, aes(x = x, y = y, fill = layer), alpha = 0.8) + 
   geom_sf(data = st_as_sf(worldmap), fill = NA, col = "grey40", size = 0.4) + 
   coord_sf(crs = st_crs(crs(worldmap)), ylim = c(34, 72), xlim = c(-20, 50)) + #poly #"mintcream"
@@ -382,7 +382,7 @@ mapfuteurope
 
 # SEAsia frame present
 mapseasia <- ggplot() + 
-  ggtitle( "C" ) + 
+  ggtitle( "C. Present" ) + 
   geom_tile(data = rdf, aes(x = x, y = y, fill = layer), alpha = 0.8) + 
   geom_sf(data = st_as_sf(worldmap), fill = NA, col = "grey40", size = 0.4) + 
   coord_sf(crs = st_crs(crs(worldmap)), c(-10, 50), xlim = c(70, 126)) + 
@@ -396,7 +396,7 @@ mapseasia
 
 # SEAsia frame future
 mapfutseasia <- ggplot() + 
-  ggtitle( "D" ) + 
+  ggtitle( "D. Future" ) + 
   geom_tile(data = rfdf, aes(x = x, y = y, fill = layer), alpha = 0.8) + 
   geom_sf(data = st_as_sf(worldmap), fill = NA, col = "grey40", size = 0.4) + 
   coord_sf(crs = st_crs(crs(worldmap)), c(-10, 50), xlim = c(70, 126)) + 
@@ -409,9 +409,9 @@ mapfutseasia <- ggplot() +
 mapfutseasia
 
 # Exporting zooms with same scale for legend
-figcomposquare <- paste0("Fig1_europe_SEasia_", version_suffix, ".png")
-#ggsave(filename = figcomposquare, width = 36, height = 36, units = "cm", dpi = 600, 
-#       gridExtra::grid.arrange( mapeurope, mapfuteurope, mapseasia, mapfutseasia, ncol = 2, nrow = 2))
+figcomposquare <- paste0("Fig1_", version_suffix, ".png")
+ggsave(filename = figcomposquare, width = 36, height = 36, units = "cm", dpi = 600, 
+       gridExtra::grid.arrange( mapeurope, mapfuteurope, mapseasia, mapfutseasia, ncol = 2, nrow = 2))
 
 
 # world difs stats and world map ------------------------------------------
@@ -574,20 +574,20 @@ end <- print(Sys.time())
 
 print(end-start)
 
-# Figure 4 R1---------------------------------------------------------------------------------------------------
+# Figure 3----------------------------------------------------------------------------------------------------
 #  bring back my pixels
 
-fig4r1 <- zall %>% filter(layer >0) %>%  
+fig3r2 <- zall %>% filter(layer >0) %>%  
   mutate(time = str_to_title(time)) %>% 
   ggplot(aes(x = bio_1, y = factor(layer), fill = time)) +
   geom_density_ridges(aes(point_color = time, point_fill = time, point_shape = time),
                       alpha = 0.3, point_alpha = 0.4, 
                       quantile_lines = TRUE, quantiles = 2, jittered_points = TRUE) +
-  scale_fill_manual(values = c("firebrick3","gold3", "navy"), labels = c("Future SSP585", "Future SSP245", "Present")) +
-  scale_color_manual(values = c("firebrick3","gold3", 'navy'), labels = c("Future SSP585", "Future SSP245", "Present"), guide = 'none') +
+  scale_fill_manual(values = c("firebrick3","gold3", "navy"), labels = c("Future SSP5-8.5", "Future SSP2-4.5", "Present")) +
+  scale_color_manual(values = c("firebrick3","gold3", 'navy'), labels = c("Future SSP5-8.5", "Future SSP2-4.5", "Present"), guide = 'none') +
   scale_discrete_manual(aesthetics = "point_shape", values = c(22, 22, 22), guide = 'none') +
   scale_discrete_manual(aesthetics = "point_fill",  values = c("firebrick3","gold3", 'navy'), 
-                        labels = c("Future SSP585", "Future SSP245", "Present"), guide = 'none') +
+                        labels = c("Future SSP5-8.5", "Future SSP2-4.5", "Present"), guide = 'none') +
   scale_discrete_manual(aesthetics = "point_color",  values = c("firebrick3","gold3", 'navy'), guide = 'none') +
   scale_alpha(guide = 'none')+
   theme_bw(base_size = 15) +
@@ -595,22 +595,20 @@ fig4r1 <- zall %>% filter(layer >0) %>%
        y = "Potential species richness", color = "", fill = "" ) +
   guides( fill = guide_legend("Period")) 
  
-fig4r1
-
-p + stat_summary(fun.data = mean_sdl, mult=1, 
-                 geom = "pointrange") + coord_flip()+
-  theme_classic()
+fig3r2
 
 end_all <- print(Sys.time())
 
-print(end_all- start)
+print(end_all - start)
 
-ggsave(filename = 'Fig3_temperature_hotspots.png', width = 22, height = 26, units = "cm", dpi = 400, 
-      fig4r1)
+ggsave(filename = 'Fig3.png', width = 22, height = 26, units = "cm", dpi = 400, 
+      fig3r2)
 
 
 # Temperature seasonality ------------------------------------------------------------------------------------
 # Seasonality
+setwd(here())
+setwd('rasters_temp_forest')
 se <- raster("bio_4/bio_4.tif")
 sefut <- raster("bio_4/bio_4_2100_SSP585.tif")
 sefut245 <- raster('bio_4/bio_4_2100_SSP245.tif')
@@ -619,9 +617,6 @@ sefut <- resample(sefut, se)
 sefut245 <- resample(sefut245, se)
 
 sedif <- sefut - se
-par(mfrow=c(2,1))
-plot(se)
-plot(sefut)
 
 # getting data
 zse <- data.frame(rasterToPoints(se ))
@@ -633,7 +628,6 @@ zfse <- data.frame(rasterToPoints(sefut))
 zzf <- left_join(zfr, zfse)
 zzf$time <- "future"
 
-head(zz)
 colnames(zzf) <- c( "x" , "y" , "layer", "bio_4", "time")
 
 zzz <- rbind(zz, zzf)
@@ -665,31 +659,24 @@ median(zabovef$bio_4) - median(zabovep$bio_4)
 setwd(here::here())
 setwd('hotspots')
 
-# 585 and 245 ridges ------------------------------------------------------------------------------------------
+# Fig S12 ----------------------------------------------------------------------------------------------------
 head(zzz)
 
 zzf245$time <- 'future245'
 head(zzf245)
 seall <- rbind(zzz, zzf245)
 
-summary(richnessm)
-summary(richnessfm)
-summary(richnessfm245)
-
-# bio 4 ridges
-# discuss - hotspots becoming less seasonal
-
-sefig4r1 <- seall %>% filter(layer >0) %>%  
+sefigs12r2 <- seall %>% filter(layer >0) %>%  
   mutate(time = str_to_title(time)) %>% 
   ggplot(aes(x = bio_4 /100, y = factor(layer), fill = time)) +
   geom_density_ridges(aes(point_color = time, point_fill = time, point_shape = time),
                       alpha = 0.3, point_alpha = 0.4, 
                       quantile_lines = TRUE, quantiles = 2, jittered_points = TRUE) +
-  scale_fill_manual(values = c("firebrick3","gold3", "navy"), labels = c("Future SSP585", "Future SSP245", "Present")) +
-  scale_color_manual(values = c("firebrick3","gold3", 'navy'), labels = c("Future SSP585", "Future SSP245", "Present"), guide = 'none') +
+  scale_fill_manual(values = c("firebrick3","gold3", "navy"), labels = c("Future SSP5-8.5", "Future SSP2-4.5", "Present")) +
+  scale_color_manual(values = c("firebrick3","gold3", 'navy'), labels = c("Future SSP5-8.5", "Future SSP2-4.5", "Present"), guide = 'none') +
   scale_discrete_manual(aesthetics = "point_shape", values = c(22, 22, 22), guide = 'none') +
   scale_discrete_manual(aesthetics = "point_fill",  values = c("firebrick3","gold3", 'navy'), 
-                        labels = c("Future SSP585", "Future SSP245", "Present"), guide = 'none') +
+                        labels = c("Future SSP5-8.5", "Future SSP2-4.5", "Present"), guide = 'none') +
   scale_discrete_manual(aesthetics = "point_color",  values = c("firebrick3","gold3", 'navy'), guide = 'none') +
   scale_alpha(guide = 'none')+
   theme_bw(base_size = 15) +
@@ -697,12 +684,13 @@ sefig4r1 <- seall %>% filter(layer >0) %>%
        y = "Potential species richness", color = "", fill = "" ) +
   guides( fill = guide_legend("Period")) 
 
-sefig4r1
-
+sefigs12r2
 end_all <- print(Sys.time())
 
 print(end_all - start)
 
-ggsave(filename = 'Fig4_seasonality_hotspots.png', width = 22, height = 26, units = "cm", dpi = 400, 
-       sefig4r1)
+setwd(here())
+setwd('hotspots')
+ggsave(filename = 'FigS12.png', width = 22, height = 26, units = "cm", dpi = 400, 
+       sefigs12r2)
 # end ---------------------------------------------------------------------
