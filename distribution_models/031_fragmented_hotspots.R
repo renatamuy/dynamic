@@ -90,6 +90,4 @@ plot(r)
 plot(rfut)
 
 end-start
-#r[values(r) > 12] <- 12
-# Maybe talk about connectivity? clusters?
 # ------------------------------------------------------------------------------------------------------------

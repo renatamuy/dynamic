@@ -267,8 +267,7 @@ for(year in unique(t2)) {  #bi$binomial_l
       
       # Intersect map
       filename_i = paste0(year,'_cc_IUCN_inter.html')
-      # Sf objects are weird, so get back to df
-      
+
       inter <- dplyr::select(as.data.frame(st_set_crs(st_intersection(p, df.year), "EPSG:4326")), -geometry)%>%
         select("sp" ,  "date"   ,  "base"    , "key"   ,   "year"    , "splab"    ,   "x"    ,   "y" ,    "spb")  
       

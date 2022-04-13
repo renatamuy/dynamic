@@ -124,13 +124,13 @@ ggsave(filename = figsa , width = 30, height = 26, units = "cm",
 map = spData::world %>%
   dplyr::filter(!continent %in% c("South America", "North America", "Antarctica", "Oceania"))
 
-# Russia only will not do; Fiji also crosses the antimeridean...
+# Russia only will not do; Fiji also crosses the antimeridean
 rossiya <- subset(map, iso_a2 %in% c("RU", "FJ"))
 pacified_rossiya <- st_shift_longitude(rossiya)
-rest_of_world <- subset(map, !iso_a2 %in% c("RU", "FJ", "FR", "TF")) # removing weird territories
+rest_of_world <- subset(map, !iso_a2 %in% c("RU", "FJ", "FR", "TF"))
 fr <- subset( map, name_long %in% c("France"))
 fre <- st_cast(fr,"POLYGON")
-france <- fre[2:3,] #REMOVING FRENCH GUIANA......................
+france <- fre[2:3,] #REMOVING FRENCH GUIANA
 map2 <- rbind(pacified_rossiya,
               rest_of_world, france) 
 
