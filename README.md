@@ -1,8 +1,8 @@
 # Present and future distribution of bat hosts of sarbecoviruses: implications for conservation and public health
 
-**Original article DOI**: Muylaert et al. (in press in Proceedings of the Royal Society B)
-
 **Workflow guidelines**: [README](https://github.com/renatamuy/dynamic/blob/main/distribution_models/README.md)
+
+**Original article DOI**: Muylaert et al. (in press in Proceedings of the Royal Society B)
 
 **Code DOI**: [Zenodo](https://doi.org/10.5281/zenodo.6499765) under a GNU General Public License v3.0 only.
 
