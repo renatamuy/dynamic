@@ -1,6 +1,4 @@
-:bat: :world_map:
-# Present and future distribution of bat hosts of sarbecoviruses: implications for conservation and public health
-:world_map: :bat:
+# Present and future distribution of bat hosts of sarbecoviruses: implications for conservation and public health :world_map: :bat:
 
 *Renata L. Muylaert, Tigga Kingston, Jinhong Luo, Maurício Humberto Vancine, Nikolas Galli, Colin J. Carlson, Reju Sam John, Maria Cristina Rulli, David T. S. Hayman
 2022 Proceedings of the Royal Society B, 289 (1975): 1-10 doi: 10.1098/rspb.2022.0397
@@ -23,3 +21,5 @@
 - [Predicting bat host hotspots to help prepare for future coronavirus outbreaks](https://phys.org/news/2022-05-host-hotspots-future-coronavirus-outbreaks.html)
 - [Mapping hotspots for bats may help scientists prepare for future bat-to-human viral outbreaks](https://www.massey.ac.nz/about/news/mapping-hotspots-for-bats-may-help-scientists-prepare-for-future-bat-to-human-viral-outbreaks/)
 - [Pesquisadores mapeiam áreas com potencial para futuros surtos de doenças semelhantes à Covid-19](https://jornal.unesp.br/2022/06/23/pesquisadores-mapeiam-areas-com-potencial-para-futuros-surtos-de-doencas-semelhantes-a-covid-19/)
+
+:bat::bat::bat::bat::bat::bat::bat::bat::bat::bat::bat::bat:
