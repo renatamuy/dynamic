@@ -1,4 +1,4 @@
-# Present and future distribution of bat hosts of sarbecoviruses: implications for conservation and public health
+# :bat: :world_map: Present and future distribution of bat hosts of sarbecoviruses: implications for conservation and public health :world_map: :bat:
 
 *Renata L. Muylaert, Tigga Kingston, Jinhong Luo, Maurício Humberto Vancine, Nikolas Galli, Colin J. Carlson, Reju Sam John, Maria Cristina Rulli, David T. S. Hayman
 2022 Proceedings of the Royal Society B, 289 (1975): 1-10 doi: 10.1098/rspb.2022.0397
