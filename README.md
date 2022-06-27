@@ -22,10 +22,7 @@ bioRxiv 2021.12.09.471691; doi: https://doi.org/10.1101/2021.12.09.471691
 
 ## On the media :newspaper:
 
--[Biorxiv](https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1)
-
--[Predicting bat host hotspots to help prepare for future coronavirus outbreaks](https://phys.org/news/2022-05-host-hotspots-future-coronavirus-outbreaks.html)
-
--[Mapping hotspots for bats may help scientists prepare for future bat-to-human viral outbreaks(https://www.massey.ac.nz/about/news/mapping-hotspots-for-bats-may-help-scientists-prepare-for-future-bat-to-human-viral-outbreaks/)
-
--Pesquisadores mapeiam áreas com potencial para futuros surtos de doenças semelhantes à Covid-19 (https://jornal.unesp.br/2022/06/23/pesquisadores-mapeiam-areas-com-potencial-para-futuros-surtos-de-doencas-semelhantes-a-covid-19/)
+- [Biorxiv](https://www.biorxiv.org/content/10.1101/2021.12.09.471691v1)
+- [Predicting bat host hotspots to help prepare for future coronavirus outbreaks](https://phys.org/news/2022-05-host-hotspots-future-coronavirus-outbreaks.html)
+- [Mapping hotspots for bats may help scientists prepare for future bat-to-human viral outbreaks(https://www.massey.ac.nz/about/news/mapping-hotspots-for-bats-may-help-scientists-prepare-for-future-bat-to-human-viral-outbreaks/)
+- Pesquisadores mapeiam áreas com potencial para futuros surtos de doenças semelhantes à Covid-19 (https://jornal.unesp.br/2022/06/23/pesquisadores-mapeiam-areas-com-potencial-para-futuros-surtos-de-doencas-semelhantes-a-covid-19/)
