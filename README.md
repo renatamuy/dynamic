@@ -2,6 +2,8 @@
 
 *Renata L. Muylaert, Tigga Kingston, Jinhong Luo, Maurício Humberto Vancine, Nikolas Galli, Colin J. Carlson, Reju Sam John, Maria Cristina Rulli, David T. S. Hayman in press in Proceedings of the Royal Society B*
 
+<img src="https://github.com/renatamuy/dynamic/blob/main/anim_intersected.gif" width="800" height="700" />
+
 **Workflow guidelines**: [README](https://github.com/renatamuy/dynamic/blob/main/distribution_models/README.md)
 
 **Article DOI**: [Muylaert et al. 2022](10.1098/rspb.2022.0397).
@@ -14,11 +16,6 @@
 
 Renata L. Muylaert, Tigga Kingston, Jinhong Luo, Maurício Humberto Vancine, Nikolas Galli, Colin J. Carlson, Reju Sam John, Maria Cristina Rulli, David T. S. Hayman
 bioRxiv 2021.12.09.471691; doi: https://doi.org/10.1101/2021.12.09.471691
-
-<img src="https://github.com/renatamuy/dynamic/blob/main/anim_intersected.gif" width="800" height="700" />
-
-
-
 
 ## On the media :newspaper:
 
