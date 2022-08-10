@@ -9,7 +9,7 @@
 
 **Workflow guidelines**: [README](https://github.com/renatamuy/dynamic/blob/main/distribution_models/README.md)
 
-**Article DOI**: [Muylaert et al. 2022](10.1098/rspb.2022.0397) under Attribution 4.0 International (CC BY 4.0).
+**Article DOI**: [Muylaert et al. 2022](https://doi.org/10.1098/rspb.2022.0397) under Attribution 4.0 International (CC BY 4.0).
 
 **Code DOI**: [Zenodo](https://doi.org/10.5281/zenodo.6499765) under a GNU General Public License v3.0 only.
 
