@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Guidelines
 
-This repository contains the code from [**Muylaert et al. 2022. Present and future distribution of bat hosts of sarbecoviruses: implications for conservation and public health. Proceedings of the Royal Society B.**](https://doi.org/10.1098/rspb.2022.0397) and guidelines for replicating the workflow.
+This repository contains the code from [**Muylaert et al. (2022)**](https://doi.org/10.1098/rspb.2022.0397) and guidelines for replicating the workflow.
 
 
 Please read the following guidelines: 
