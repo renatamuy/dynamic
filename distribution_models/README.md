@@ -18,7 +18,7 @@ This file contains the data from [**Muylaert et al. 2022. Present and future dis
 Please read the following guidelines: 
 
 * Read the [paper](https://doi.org/10.1098/rspb.rspb.2022.0397).
-* Make sure you download all **data** from **Dryad**.
+* Make sure you download all **data** from [Dryad](https://doi.org/10.5061/dryad.m63xsj440).
 * Unzip the data in```muylaert_et_al_data.zip```.
 * Clone the ```dynamic``` repository [GitHub](https://github.com/renatamuy/dynamic/).
 * Unzip the code repository and find the ```distribution_models``` folder.
