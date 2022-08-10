@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Guidelines
 
-This file contains the data from [**Muylaert et al. 2022. Present and future distribution of bat hosts of sarbecoviruses: implications for conservation and public health. Proceedings of the Royal Society B.**](https://doi.org/10.1098/rspb.rspb.2022.0397) and guidelines for the use of the workflow.
+This file contains the data from [**Muylaert et al. 2022. Present and future distribution of bat hosts of sarbecoviruses: implications for conservation and public health. Proceedings of the Royal Society B.**](https://doi.org/10.1098/rspb.2022.0397) and guidelines for the use of the workflow.
 
 
 Please read the following guidelines: 
@@ -20,12 +20,12 @@ Please read the following guidelines:
 * Read the [paper](https://doi.org/10.1098/rspb.rspb.2022.0397).
 * Make sure you download all **data** from **Dryad**.
 * Unzip the data in```muylaert_et_al_data.zip```.
-* Download code from [Zenodo]() or the ```dynamic``` repository [GitHub](https://github.com/renatamuy/dynamic/blob/main/distribution_models) and find the ```distribution_models``` folder.
-* Unzip the code repository.
+* Clone the ```dynamic``` repository [GitHub](https://github.com/renatamuy/dynamic/).
+* Unzip the code repository and find the ```distribution_models``` folder.
 * Move the extracted data files from ```muylaert_et_al_data``` to the ```distribution_models``` folder.
 * Make sure you are working in the ```distribution_models``` R project.
-* Run [00_packages](https://github.com/renatamuy/dynamic/blob/main/distribution_models/00_packages.R) and [01_settings](https://github.com/renatamuy/dynamic/blob/main/distribution_models/01_settings.R) scripts first.
-* Run other scripts following the numerical 3-digit ascending order or as needed.
+* Run the [00_packages](https://github.com/renatamuy/dynamic/blob/main/distribution_models/00_packages.R) and [01_settings](https://github.com/renatamuy/dynamic/blob/main/distribution_models/01_settings.R) scripts first.
+* Run the other scripts following the numerical 3-digit ascending order or as needed.
 
 # Folder structure
 
