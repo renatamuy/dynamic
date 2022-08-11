@@ -42,7 +42,6 @@ setdiff(colnames(file_all), colnames(ruberbb))
 
 colnames(file_all)
 
-
 head(ruberbb)
 
 ruberbb$splab <- sub('_', ' ', stringr::str_to_sentence(ruberbb$sp))
@@ -59,23 +58,20 @@ binded <- rbind(file_all, ruberbb)
 nrow(binded)
 length(unique(binded$sp))
 
-
 # Raw completeness
 
 gsarbecobats <- ggplot(data=binded) + 
   geom_bar(mapping = aes(x=forcats::fct_infreq(splab), fill = base),
            width = 0.9, position = position_dodge())+  scale_fill_viridis_d()+  
   theme_bw() +
-  theme(        axis.text.y = element_text( face="italic", angle=0
+  theme(  axis.text.y = element_text( face="italic", angle=0,
                                             colour="black", size=rel(1)))+
   ylab("Number of unique locations after cc")+xlab("Species")+
   coord_flip() 
 
-
 gsarbecobats
 
 ggsave("gsarbecobats_completeness.png", gsarbecobats)
-
 
 gs <- ggplot(data=binded) + 
   geom_bar(mapping = aes(x=forcats::fct_infreq(splab)),
@@ -91,7 +87,6 @@ gs <- ggplot(data=binded) +
 gs
 
 ggsave("gsarbecobats_completeness_bw.png", gs)
-
 
 # Exporting data merged for inspection
 

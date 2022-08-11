@@ -12,7 +12,7 @@ master <- "CC_master_bat_data_2021_09_D16.txt"
 dynmaster <- paste0(here(), "/dynamic_master/")
 
 # Post processing settings
-projdir <- paste0(here(), "/distribution_models/")
+projdir <- paste0(here(), "")
 
 # Name version based on results file from ENMTML
 version_suffix <- "results_40o_ss6_maxent_15rep"
@@ -66,3 +66,4 @@ figfutnolog <- paste0("Figure_Future_Richness_nolog_", version_suffix, ".jpg")
 tabname <- paste0("Table_Range_", version_suffix, ".xlsx")
 
 # end ---------------------------------------------------------------------
+

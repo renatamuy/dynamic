@@ -1,6 +1,6 @@
 ###################################
 # Script ENMTML
-# R version 4.1.0 (2021-05-18)
+# R version 4.1.0 (2022-08-11)
 ###################################
 
 warning('SLOW')
@@ -29,25 +29,25 @@ options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 parallel::detectCores()
 
-d_climate <- file.path('D:/OneDrive - Massey University/_env/_env_27km_ss6/')
+d_climate <- file.path('_env_27km_ss6/')
 
-f_occ <- "D:/OneDrive - Massey University/PD_2021/distribution_models/dynamic_master/CC_master_bat_data_2021_09_D16.txt"
+f_occ <- "dynamic_master/CC_master_bat_data_2021_09_D16.txt"
 
 # Subset of scaled variables
 
-d_proj <-  file.path('D:/OneDrive - Massey University/_env/_env_fut_27km_ss6/') 
+d_proj <-  file.path('_env_fut_27km_ss6/') 
 
 start <- print(Sys.time())
 
 ENMTML( pred_dir = d_climate,
         proj_dir = d_proj,
-        result_dir = 'results_40o_ss6_maxent_15rep', 
+        result_dir = 'results', 
         occ_file = f_occ,
         sp = 'sp',
         x = 'long',
         y = 'lat',
-        min_occ=40,
-        thin_occ=c(method='USER-DEFINED', distance='13'),
+        min_occ = 40,
+        thin_occ = c(method='USER-DEFINED', distance='13'),
         eval_occ = NULL,
         colin_var= NULL, 
         imp_var = TRUE,
@@ -71,26 +71,25 @@ print(end-start)
 ###############################################################################################################
 # IUCN intersected
 
-setwd('D://OneDrive - Massey University//_env//')
+setwd(here())
 
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 parallel::detectCores()
 
-d_climate <- file.path('D:/OneDrive - Massey University/_env/_env_27km_ss6/')
+d_climate <- file.path('_env_27km_ss6/')
 
-setwd('D:/OneDrive - Massey University/_env/sdm_inputs')
-
-f_occ <- "D:/OneDrive - Massey University/_env/sdm_inputs/CC_IUCN_intersect_master_bat_data_2021_09_D16_TAB.txt"
+f_occ <- "dynamic_master/CC_IUCN_intersect_master_bat_data_2021_09_D16_TAB.txt"
 
 # Subset of variables scaled
-d_proj <-  file.path('D:/OneDrive - Massey University/_env/_env_fut_27km_ss6/') 
+
+d_proj <-  file.path('_env_fut_27km_ss6/') 
 
 start <- print(Sys.time())
 
 ENMTML( pred_dir = d_climate,
         proj_dir = d_proj,
-        result_dir = 'results_iucni_40o_ss6_maxent_15rep', 
+        result_dir = 'results_iucn_intersected', 
         occ_file = f_occ,
         sp = 'sp',
         x = 'long',
@@ -117,3 +116,4 @@ end <- print(Sys.time())
 
 print(end-start)
 
+#------------------------------------------------------------------------
